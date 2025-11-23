@@ -9,7 +9,7 @@ export default function App() {
     <div className="min-h-screen flex items-center justify-center bg-slate-900">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/country" element={<Country />} />
+        <Route path="/country/:code" element={<Country />} />
         <Route path="/about" element={<About />} />
         <Route path="/map" element={<Map />} />
       </Routes>
