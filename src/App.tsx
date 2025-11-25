@@ -1,12 +1,17 @@
 import { Route, Routes } from "react-router-dom";
+
 import Home from "./pages/Home/Home";
 import Country from "./pages/Country/Country";
 import About from "./pages/About/About";
 import Map from "./pages/Map/Map";
 
+import Navbar from "./components/Navbar";
+
+
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-900">
+    <div className="min-h-screen bg-slate-900 text-slate-100">
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/country/:code" element={<Country />} />
