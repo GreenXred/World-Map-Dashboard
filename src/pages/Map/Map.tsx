@@ -1,8 +1,10 @@
 import { useDispatch } from "react-redux";
 import { setCountry } from "../../store/CountrySlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Map() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <div className="flex items-center justify-center">
@@ -11,7 +13,10 @@ export default function Map() {
             </h1>
             <button
                 className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
-                onClick={() => dispatch(setCountry("US"))}
+                onClick={() => {
+                    dispatch(setCountry("US"));
+                    navigate("/country/US");
+                }}
             >
                 Выбрать страну: US
             </button>
