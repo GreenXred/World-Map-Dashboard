@@ -14,8 +14,8 @@ export default function Map() {
             <button
                 className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
                 onClick={() => {
-                    dispatch(setCountry("US"));
-                    navigate("/country/US");
+                    dispatch(setCountry("US")); // обновляем Redux, чтобы приложение знало, какая страна выбрана
+                    navigate("/country/US");    // переключаем страницу на /country/US
                 }}
             >
                 Выбрать страну: US
