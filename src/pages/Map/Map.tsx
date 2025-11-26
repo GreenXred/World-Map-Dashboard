@@ -17,7 +17,7 @@ export default function Map() {
             a.name.localeCompare(b.name)
         );
     }
-    
+
     return (
         <div className="flex flex-col items-center text-slate-100">
             <h1 className="text-3xl font-bold text-emerald-300">
@@ -32,7 +32,13 @@ export default function Map() {
             {data && (
                 <ul className="mt-4 space-y-2">
                     {countries.map((country: any) => ( //TODO типизировать country
-                        <li key={country.id} className="text-slate-200">
+                        <li key={country.id}
+                            className="text-slate-200 cursor-pointer hover:text-emerald-400 transition"
+                            onClick={() => {
+                                dispatch(setCountry(country.id)); // обновляем Redux, чтобы приложение знало, какая страна выбрана
+                                navigate(`/country/${country.id}`); // переключаем страницу на /country/{country.id}
+                            }}
+                        >
                             {country.name}
                         </li>
                     ))}
