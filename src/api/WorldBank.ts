@@ -1,3 +1,5 @@
+// Получение списка стран из World Bank API
+
 import { useQuery } from "@tanstack/react-query";
 
 export function useWorldBankCountries() {
@@ -7,6 +9,7 @@ export function useWorldBankCountries() {
             const response = await fetch(
                 "https://api.worldbank.org/v2/country?format=json&per_page=300"
             );
+            
             const data = await response.json();
             return data;
         },
