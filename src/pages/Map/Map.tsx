@@ -3,21 +3,34 @@ import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
 import { useWorldBankCountries } from "../../api/WorldBank";
 
-const { data, isLoading, error } = useWorldBankCountries();
-
-{isLoading && <p>Загрузка...</p>}
-{error && <p>Произошла ошибка</p>}
-{data && <p>Всего стран: {data[1].length}</p>}
+// World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран
 
 export default function Map() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { data, isLoading, error } = useWorldBankCountries();
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center text-slate-100">
             <h1 className="text-3xl font-bold text-emerald-300">
                 Map
             </h1>
+
+            {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
+            {isLoading && <p>Загрузка...</p>}
+            {error && <p>Произошла ошибка</p>}
+            {data && <p>Всего стран: {data[1].length}</p>}
+
+            {data && (
+                <ul className="mt-4 space-y-2">
+                    {data[1].map((country: any) => ( //TODO типизировать country
+                        <li key={country.id} className="text-slate-200">
+                            {country.name}
+                        </li>
+                    ))}
+                </ul>
+            )}
+
             <button
                 className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
                 onClick={() => {

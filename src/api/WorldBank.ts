@@ -12,3 +12,17 @@ export function useWorldBankCountries() {
         },
     });
 }
+
+// [
+//   {
+//     "page": 1,
+//     "pages": 6,
+//     "per_page": "50",
+//     "total": 264
+//   },
+//   [
+//     { "id": "AFG", "name": "Afghanistan", ... },
+//     { "id": "ALB", "name": "Albania", ... },
+//     {...}
+//   ]
+// ]
