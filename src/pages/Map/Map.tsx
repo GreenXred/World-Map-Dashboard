@@ -1,6 +1,13 @@
 import { useDispatch } from "react-redux";
 import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
+import { useWorldBankCountries } from "../../api/WorldBank";
+
+const { data, isLoading, error } = useWorldBankCountries();
+
+{isLoading && <p>Загрузка...</p>}
+{error && <p>Произошла ошибка</p>}
+{data && <p>Всего стран: {data[1].length}</p>}
 
 export default function Map() {
     const dispatch = useDispatch();
