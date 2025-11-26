@@ -10,6 +10,14 @@ export default function Map() {
     const navigate = useNavigate();
     const { data, isLoading, error } = useWorldBankCountries();
 
+    let countries: any[] = []; // TODO типизировать countries
+
+    if (data) {
+        countries = [...data[1]].sort((a: any, b: any) => // TODO типизировать a и b
+            a.name.localeCompare(b.name)
+        );
+    }
+    
     return (
         <div className="flex flex-col items-center text-slate-100">
             <h1 className="text-3xl font-bold text-emerald-300">
@@ -23,7 +31,7 @@ export default function Map() {
 
             {data && (
                 <ul className="mt-4 space-y-2">
-                    {data[1].map((country: any) => ( //TODO типизировать country
+                    {countries.map((country: any) => ( //TODO типизировать country
                         <li key={country.id} className="text-slate-200">
                             {country.name}
                         </li>
