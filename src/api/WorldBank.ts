@@ -5,7 +5,7 @@ export function useWorldBankCountries() {
         queryKey: ["worldBankCountries"],
         queryFn: async () => {
             const response = await fetch(
-                "https://api.worldbank.org/v2/country?format=json"
+                "https://api.worldbank.org/v2/country?format=json&per_page=300"
             );
             const data = await response.json();
             return data;
