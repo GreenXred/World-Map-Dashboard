@@ -4,34 +4,97 @@ export default function LanguageModal({ onSelect }: { onSelect: (lang: string) =
     return (
         <div className="fixed inset-0 flex items-center justify-center">
             {/* Затемнённый фон */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+            <motion.div // Фон
+                className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+            >
+            </motion.div>
 
             {/* Стеклянная иконка */}
-            <motion.div
+            <motion.div // Модальное окно
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
-                className="relative bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl"
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.25 }}
+                className="
+                    relative 
+                    bg-white/10 
+                    backdrop-blur-2xl 
+                    rounded-3xl 
+                    p-8 
+                    border border-white/20 
+                    shadow-[0_0_40px_rgba(0,0,0,0.35)]
+                "
             >
-                <h2 className="text-xl font-semibold mb-4 text-center text-slate-100">
-                    Choose Language
+                <h2 className="text-2xl font-bold mb-6 text-center text-white drop-shadow">
+                    Language:
                 </h2>
 
-                {/* Кнопки-флаги */}
-                <div className="flex gap-4 justify-center">
-                    <button
+                {/* Флаги */}
+                <motion.div // Контейнер для кнопок
+                    className="flex gap-4 justify-center"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.15, // задержка между появлением 
+                            },
+                        },
+                    }}
+                >
+                    <motion.button // Кнопка для английского
+                        variants={{
+                            hidden: { opacity: 0, y: 10 },
+                            visible: { opacity: 1, y: 0 },
+                        }}
                         onClick={() => onSelect("en")}
-                        className="px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 transition text-2xl"
+                        className="    
+                            w-20 h-20 
+                            flex items-center justify-center 
+                            rounded-2xl 
+                            bg-white/10 
+                            border border-white/20 
+                            backdrop-blur-xl 
+                            text-5xl 
+                            hover:bg-white/20 
+                            hover:scale-105 
+                            hover:shadow-[0_0_15px_rgba(255,255,255,0.35)]
+                            active:scale-95
+                            transition
+                        "
                     >
                         🇬🇧
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button // Кнопка для русского
+                        variants={{
+                            hidden: { opacity: 0, y: 10 },
+                            visible: { opacity: 1, y: 0 },
+                        }}
                         onClick={() => onSelect("ru")}
-                        className="px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 transition text-2xl"
+                        className="
+                            w-20 h-20 
+                            flex items-center justify-center 
+                            rounded-2xl 
+                            bg-white/10 
+                            border border-white/20 
+                            backdrop-blur-xl 
+                            text-5xl 
+                            hover:bg-white/20 
+                            hover:scale-105
+                            hover:shadow-[0_0_15px_rgba(255,255,255,0.35)]
+                            active:scale-95
+                            transition
+                        "
                     >
                         🇷🇺
-                    </button>
-                </div>
+                    </motion.button>
+                </motion.div>
             </motion.div>
         </div>
     );
