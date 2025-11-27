@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setCountry } from "../../store/CountrySlice";
 import { useEffect } from "react";
 
-import { INDICATORS } from "../../config/indicators";
+import { INDICATORS } from "../../config/Indicators";
 import IndicatorCard from "../../components/IndicatorCard";
 
 
@@ -33,8 +33,8 @@ export default function Country() {
                     <IndicatorCard
                         key={indicator.id}
                         label={indicator.label}
-                        value={null}      // заглушка
-                        year={null}       // заглушка
+                        indicatorId={indicator.id}
+                        countryCode={code || ""}       
                     />
                 ))}
             </div>
