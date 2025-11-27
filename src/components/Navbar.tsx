@@ -1,8 +1,13 @@
+// Компонент навигационной панели с анимацией и активными ссылками
+
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useLanguage } from "../i18next/LanguageContext";
 
 
 export default function Navbar() {
+    const { lang, setLang } = useLanguage();
+
     return (
         <motion.header
             className="bg-slate-800 border-b border-slate-700"
@@ -78,6 +83,21 @@ export default function Navbar() {
                             </div>
                         )}
                     </NavLink>
+                </div>
+                <div className="flex gap-2 ml-4">
+                    <button
+                        onClick={() => setLang("en")}
+                        className={lang === "en" ? "text-emerald-400" : "text-slate-300"}
+                    >
+                        EN
+                    </button>
+
+                    <button
+                        onClick={() => setLang("ru")}
+                        className={lang === "ru" ? "text-emerald-400" : "text-slate-300"}
+                    >
+                        RU
+                    </button>
                 </div>
             </nav>
         </motion.header>

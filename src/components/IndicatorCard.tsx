@@ -1,6 +1,8 @@
-// Отображает значение индикатора для конкретной страны
+// Компонент отображает значение индикатора для конкретной страны
 
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
+import { motion } from "framer-motion";
+
 
 type IndicatorCardProps = {
     label: string;
@@ -90,7 +92,14 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
     }
 
     return (
-        <div className="bg-slate-800 p-4 rounded-xl shadow hover:shadow-lg transition">
+        <motion.div
+            className="bg-slate-800 p-4 rounded-xl shadow hover:shadow-lg transition"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            whileHover={{ scale: 1.03 }}
+
+        >
             <p className="text-sm text-slate-400 mb-1">{label}</p>
 
             {isLoading && <p className="text-slate-500 text-sm">Loading...</p>}
@@ -107,6 +116,6 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
                     </p>
                 </>
             )}
-        </div>
+        </motion.div>
     );
 }

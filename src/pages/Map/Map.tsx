@@ -25,9 +25,9 @@ export default function Map() {
             </h1>
 
             {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
-            {isLoading && <p>Загрузка...</p>}
-            {error && <p>Произошла ошибка</p>}
-            {data && <p>Всего стран: {data[1].length}</p>}
+            {isLoading && <p>Loading...</p>}
+            {error && <p>Error</p>}
+            {data && <p>Total countries and aggregates: {data[1].length}</p>}
 
             {data && (
                 <ul className="mt-4 space-y-2">
