@@ -91,6 +91,21 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
         }
     }
 
+    // Данные для sparkline (мини-графика)
+
+    let sparkData: { year: string; value: number }[] = [];
+
+    if (data && Array.isArray(data[1])) {
+        sparkData = data[1]
+            .filter((item) => item.value !== null)      // убираем пустые значения
+            .slice(0, 20)                               // берём, например, последние 20 записей
+            .map((item) => ({
+                year: item.date,
+                value: item.value as number,
+            }))
+            .reverse();                                 // разворачиваем: старые -> новые
+    }
+
     return (
         <motion.div
             className="bg-slate-800 p-4 rounded-xl shadow hover:shadow-lg transition"
