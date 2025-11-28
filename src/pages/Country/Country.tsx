@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../store/Store";
 import { useDispatch } from "react-redux";
-import { setCountry } from "../../store/CountrySlice";
 import { useEffect } from "react";
-import { useLanguage } from "../../i18next/LanguageContext";
 
+import { setCountry } from "../../store/CountrySlice";
+import type { RootState } from "../../store/Store";
+import { useLanguage } from "../../i18next/LanguageContext";
 import { INDICATORS } from "../../config/Indicators";
 import IndicatorCard from "../../components/IndicatorCard";
+import CountryChart from "../../components/CountryChart";
 
 export default function Country() {
     const { code } = useParams();
@@ -33,10 +34,15 @@ export default function Country() {
                         key={indicator.id}
                         label={indicator.label}
                         indicatorId={indicator.id}
-                        countryCode={code || ""}       
+                        countryCode={code || ""}
                     />
                 ))}
             </div>
+
+            {/* Большой график */}
+            {code && (
+                <CountryChart countryCode={code} />
+            )}
 
             <h1 className="text-3xl text-emerald-300">
                 {t("selectedCountry")} {selected}
