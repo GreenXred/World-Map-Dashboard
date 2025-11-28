@@ -29,3 +29,9 @@ export function useWorldBankCountries() {
 //     {...}
 //   ]
 // ]
+
+// [
+//   { date: "2024", value: null },
+//   { date: "2023", value: 12345 },
+//   ...
+// ]
