@@ -26,7 +26,7 @@ export default function Map() {
 
             {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
             {isLoading && <p>Loading...</p>}
-            {error && <p>Error</p>}
+            {error && <p>Error loading data.</p>}
             {data && <p>Total countries and aggregates: {data[1].length}</p>}
 
             {data && (
