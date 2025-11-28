@@ -91,7 +91,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
         }
     }
 
-    // Данные для sparkline (мини-графика)
+    // Массив для sparkline (мини-графика)
 
     let sparkData: { year: string; value: number }[] = [];
 
@@ -104,6 +104,30 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
                 value: item.value as number,
             }))
             .reverse();                                 // разворачиваем: старые -> новые
+    }
+
+    // размеры мини-графика в пикселях
+    const sparkWidth = 80;
+    const sparkHeight = 30;
+
+    let sparkPoints = "";
+
+    if (sparkData.length > 1) {
+        const values = sparkData.map((p) => p.value);
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        const range = max - min || 1; // защита от деления на 0
+
+        sparkPoints = sparkData
+            .map((point, index) => {
+                const x =
+                    (index / (sparkData.length - 1)) * sparkWidth; // от 0 до ширины
+                const normY = (point.value - min) / range;        // от 0 до 1
+                const y = sparkHeight - normY * sparkHeight;      // переворачиваем ось Y
+
+                return `${x},${y}`;
+            })
+            .join(" ");
     }
 
     return (
@@ -121,15 +145,33 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
             {error && <p className="text-red-400 text-sm">Error loading data</p>}
 
             {!isLoading && !error && (
-                <>
-                    <p className="text-2xl font-semibold text-emerald-300">
-                        {value !== null ? formatValue(indicatorId, value) : "-"}
+                <div className="mt-2 flex items-end justify-between">
+    
+                    <div>
+                        <p className="text-2xl font-semibold text-emerald-300">
+                            {value !== null ? formatValue(indicatorId, value) : "-"}
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                            {year !== null ? `Year: ${year}` : "No data"}
+                        </p>
+                    </div>
 
-                    </p>
-                    <p className="text-sm text-slate-400 mt-1">
-                        {year !== null ? `Year: ${year}` : "No data"}
-                    </p>
-                </>
+                    {sparkPoints && (
+                        <svg
+                            width={sparkWidth}
+                            height={sparkHeight}
+                            viewBox={`0 0 ${sparkWidth} ${sparkHeight}`}
+                            className="ml-3 text-emerald-400"
+                        >
+                            <polyline
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                points={sparkPoints}
+                            />
+                        </svg>
+                    )}
+                </div>
             )}
         </motion.div>
     );
