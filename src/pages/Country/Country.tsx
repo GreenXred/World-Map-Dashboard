@@ -22,21 +22,42 @@ export default function Country() {
         }
     }, [code, dispatch]);
 
+    // Получаем уникальные категории индикаторов
+    const categories = Array.from(
+        new Set(INDICATORS.map((indicator) => indicator.category))
+    );
+
     return (
         <div className="flex flex-col items-center p-6">
             <h1 className="text-3xl text-emerald-300 font-bold">
                 {t("pageTitle")} {code}
             </h1>
 
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
-                {INDICATORS.map((indicator) => (
-                    <IndicatorCard
-                        key={indicator.id}
-                        label={indicator.label}
-                        indicatorId={indicator.id}
-                        countryCode={code || ""}
-                    />
-                ))}
+            <div className="w-full max-w-5xl space-y-8 mt-6">
+                {categories.map((category) => {
+                    const indicatorsInCategory = INDICATORS.filter(
+                        (indicator) => indicator.category === category
+                    );
+
+                    return (
+                        <section key={category}>
+                            <h2 className="text-lg font-semibold text-slate-200 mb-3">
+                                {category}
+                            </h2>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {indicatorsInCategory.map((indicator) => (
+                                    <IndicatorCard
+                                        key={indicator.id}
+                                        label={indicator.label}
+                                        indicatorId={indicator.id}
+                                        countryCode={code || ""}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    );
+                })}
             </div>
 
             {/* Большой график */}
