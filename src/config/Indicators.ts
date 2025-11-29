@@ -33,7 +33,7 @@ export const INDICATORS: IndicatorConfig[] = [
     {
         id: "SP.DYN.LE00.IN",
         label: "Life expectancy at birth, total (years)",
-        category: "The cocial sphere",
+        category: "Social",
         source: "worldBank",
     },
     {

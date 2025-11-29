@@ -1,10 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { setCountry } from "../../store/CountrySlice";
-import type { RootState } from "../../store/Store";
 import { useLanguage } from "../../i18next/LanguageContext";
 import { INDICATORS } from "../../config/Indicators";
 import IndicatorCard from "../../components/IndicatorCard";
@@ -12,7 +10,6 @@ import CountryChart from "../../components/CountryChart";
 
 export default function Country() {
     const { code } = useParams();
-    const selected = useSelector((state: RootState) => state.country.selectedCountry);
     const dispatch = useDispatch();
     const { t } = useLanguage();
 
@@ -22,12 +19,23 @@ export default function Country() {
         }
     }, [code, dispatch]);
 
+    // Описания категорий индикаторов
+    const categoryDescriptions: Record<string, string> = {
+        Economy: t("categoryEconomyDescription"),
+        Demography: t("categoryDemographyDescription"),
+        Social: t("categorySocialDescription"),
+        Ecology: t("categoryEcologyDescription"),
+        Environment: t("categoryEnvironmentDescription"),
+    };
+
     // Получаем уникальные категории индикаторов
     const categories = Array.from(
         new Set(INDICATORS.map((indicator) => indicator.category))
     );
 
     return (
+
+        // Страница страны с заголовком, категориями индикаторов и большим графиком
         <div className="flex flex-col items-center p-6">
             <h1 className="text-3xl text-emerald-300 font-bold">
                 {t("pageTitle")} {code}
@@ -44,6 +52,10 @@ export default function Country() {
                             <h2 className="text-lg font-semibold text-slate-200 mb-3">
                                 {category}
                             </h2>
+
+                            <p className="text-sm text-slate-400 mb-3">
+                                {categoryDescriptions[category]}
+                            </p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {indicatorsInCategory.map((indicator) => (
@@ -65,9 +77,6 @@ export default function Country() {
                 <CountryChart countryCode={code} />
             )}
 
-            <h1 className="text-3xl text-emerald-300">
-                {t("selectedCountry")} {selected}
-            </h1>
         </div>
     );
 }
