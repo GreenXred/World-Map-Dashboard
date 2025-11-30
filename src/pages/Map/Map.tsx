@@ -3,14 +3,7 @@ import { useState } from "react";
 import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
 import { useWorldBankCountries } from "../../api/WorldBank";
-
-const COUNTRY_LABELS: Record<string, string> = {
-    USA: "United States",
-    BRA: "Brazil",
-    RUS: "Russia",
-    IND: "India",
-    AUS: "Australia",
-};
+import { WorldMapSvg } from "../../components/WorldMapSVG";
 
 // World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран
 
@@ -32,12 +25,54 @@ export default function Map() {
         setHoveredCode(code);
     }
 
+    // Обработчики событий мыши для SVG-карты
+    function handleSvgMouseMove(event: React.MouseEvent<SVGSVGElement>) {
+        const target = event.target as SVGElement;
+
+        if (target.tagName === "path") {
+            const iso2 = (target.id || "").toUpperCase();
+            const iso3 = iso2ToIso3[iso2];
+
+            if (iso3) {
+                handleCountryHover(iso3);
+                return;
+            }
+        }
+
+        handleCountryHover(null);
+    }
+
+    // Обработчик клика по SVG-карте
+    function handleSvgClick(event: React.MouseEvent<SVGSVGElement>) {
+        const target = event.target as SVGElement;
+
+        if (target.tagName === "path") {
+            const iso2 = (target.id || "").toUpperCase();
+            const iso3 = iso2ToIso3[iso2];
+
+            if (iso3) {
+                handleCountryClick(iso3);
+            }
+        }
+    }
+
     let countries: any[] = []; // TODO типизировать countries
 
     if (data) {
         countries = [...data[1]].sort((a: any, b: any) => // TODO типизировать a и b
             a.name.localeCompare(b.name)
         );
+    }
+
+    // Преобразование ISO2 в ISO3 для сопоставления с картой
+    const iso2ToIso3: Record<string, string> = {};
+
+    if (data) {
+        data[1].forEach((c: any) => {
+            if (c.iso2Code && c.id) {
+                iso2ToIso3[c.iso2Code.toUpperCase()] = c.id.toUpperCase();
+            }
+        });
     }
 
     return (
@@ -48,66 +83,17 @@ export default function Map() {
 
             {/* SVG-карта */}
             <div className="mt-6 w-full max-w-4xl mx-auto">
+                <WorldMapSvg
+                    className="w-full h-auto world-map"
+                    onMouseMove={handleSvgMouseMove}
+                    onMouseLeave={() => handleCountryHover(null)}
+                    onClick={handleSvgClick}
+                />
+            </div>
 
-                {/* Подсвечивание названия наведенной страны */}
-                <div className="mt-3 h-5 text-sm text-slate-200 text-center">
-                    {hoveredCode ? COUNTRY_LABELS[hoveredCode] || hoveredCode : "\u00A0"}
-                </div>
-
-                <svg
-                    viewBox="0 0 1000 500" // координатная система для карты
-                    className="w-full h-auto"
-                >
-                    {/* USA */}
-                    <path
-                        d="M100,200 L250,200 L250,260 L100,260 Z"
-                        className={`stroke-slate-900 stroke-[1.5] cursor-pointer transition 
-                            ${hoveredCode === "USA" ? "fill-emerald-400" : "fill-slate-700"}`}
-                        onMouseEnter={() => handleCountryHover("USA")}
-                        onMouseLeave={() => handleCountryHover(null)}
-                        onClick={() => handleCountryClick("USA")}
-                    />
-
-                    {/* Brazil */}
-                    <path
-                        d="M260,260 L340,260 L340,340 L260,340 Z"
-                        className={`stroke-slate-900 stroke-[1.5] cursor-pointer transition 
-                            ${hoveredCode === "BRA" ? "fill-emerald-400" : "fill-slate-700"}`}
-                        onMouseEnter={() => handleCountryHover("BRA")}
-                        onMouseLeave={() => handleCountryHover(null)}
-                        onClick={() => handleCountryClick("BRA")}
-                    />
-
-                    {/* Russia */}
-                    <path
-                        d="M450,120 L700,120 L700,200 L450,200 Z"
-                        className={`stroke-slate-900 stroke-[1.5] cursor-pointer transition 
-                            ${hoveredCode === "RUS" ? "fill-emerald-400" : "fill-slate-700"}`}
-                        onMouseEnter={() => handleCountryHover("RUS")}
-                        onMouseLeave={() => handleCountryHover(null)}
-                        onClick={() => handleCountryClick("RUS")}
-                    />
-
-                    {/* India */}
-                    <path
-                        d="M520,230 L580,230 L580,290 L520,290 Z"
-                        className={`stroke-slate-900 stroke-[1.5] cursor-pointer transition 
-                            ${hoveredCode === "IND" ? "fill-emerald-400" : "fill-slate-700"}`}
-                        onMouseEnter={() => handleCountryHover("IND")}
-                        onMouseLeave={() => handleCountryHover(null)}
-                        onClick={() => handleCountryClick("IND")}
-                    />
-
-                    {/* Australia */}
-                    <path
-                        d="M700,320 L820,320 L820,400 L700,400 Z"
-                        className={`stroke-slate-900 stroke-[1.5] cursor-pointer transition 
-                            ${hoveredCode === "AUS" ? "fill-emerald-400" : "fill-slate-700"}`}
-                        onMouseEnter={() => handleCountryHover("AUS")}
-                        onMouseLeave={() => handleCountryHover(null)}
-                        onClick={() => handleCountryClick("AUS")}
-                    />
-                </svg>
+            {/* Подпись под картой — текущая наведённая страна */}
+            <div className="mt-3 h-5 text-sm text-slate-200 text-center">
+                {hoveredCode ? hoveredCode : "\u00A0"}
             </div>
 
             {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
@@ -115,6 +101,7 @@ export default function Map() {
             {error && <p>Error loading data.</p>}
             {data && <p>Total countries and aggregates: {data[1].length}</p>}
 
+            {/* Список стран с возможностью клика */}
             {data && (
                 <ul className="mt-4 space-y-2">
                     {countries.map((country: any) => ( //TODO типизировать country

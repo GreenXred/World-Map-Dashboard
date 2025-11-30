@@ -1,3 +1,5 @@
+// Модальное окно выбора языка
+
 import { motion } from "framer-motion";
 
 export default function LanguageModal({ onSelect }: { onSelect: (lang: string) => void }) {
