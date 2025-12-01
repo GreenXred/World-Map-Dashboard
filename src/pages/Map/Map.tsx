@@ -4,6 +4,7 @@ import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
 import { useWorldBankCountries } from "../../api/WorldBank";
 import { WorldMapSvg } from "../../components/WorldMapSVG";
+import { COUNTRY_NAMES } from "../../utils/iso3";
 
 // World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран
 
@@ -14,7 +15,7 @@ export default function Map() {
 
     const [hoveredCode, setHoveredCode] = useState<string | null>(null); // код страны, над которой наведен курсор
 
-    // Обработчик клика по стране на карте
+    // Обработчик клика по стране
     function handleCountryClick(code: string) {
         dispatch(setCountry(code)); // обновляем Redux, чтобы приложение знало, какая страна выбрана
         navigate(`/country/${code}`); // переключаем страницу на /country/{code}
@@ -32,6 +33,13 @@ export default function Map() {
         if (target.tagName === "path") {
             const iso2 = (target.id || "").toUpperCase();
             const iso3 = iso2ToIso3[iso2];
+
+            console.log("HOVER:", {
+                iso2,
+                iso3,
+                hoveredCode,
+                name: iso3 ? COUNTRY_NAMES[iso3] : null,
+            });
 
             if (iso3) {
                 handleCountryHover(iso3);
@@ -93,7 +101,7 @@ export default function Map() {
 
             {/* Подпись под картой — текущая наведённая страна */}
             <div className="mt-3 h-5 text-sm text-slate-200 text-center">
-                {hoveredCode ? hoveredCode : "\u00A0"}
+                {hoveredCode ? COUNTRY_NAMES[hoveredCode] || hoveredCode : "\u00A0"}
             </div>
 
             {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
