@@ -14,6 +14,7 @@ export default function Map() {
     const { data, isLoading, error } = useWorldBankCountries();
 
     const [hoveredCode, setHoveredCode] = useState<string | null>(null); // код страны, над которой наведен курсор
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 }); // позиция мыши 
 
     // Обработчик клика по стране
     function handleCountryClick(code: string) {
@@ -30,16 +31,16 @@ export default function Map() {
     function handleSvgMouseMove(event: React.MouseEvent<SVGSVGElement>) {
         const target = event.target as SVGElement;
 
+        // сохраняем позицию курсора
+        const rect = event.currentTarget.getBoundingClientRect();
+        setMousePos({
+            x: event.clientX - rect.left + 15,  // +15 px чтобы tooltip был правее курсора
+            y: event.clientY - rect.top + 15,
+        });
+
         if (target.tagName === "path") {
             const iso2 = (target.id || "").toUpperCase();
             const iso3 = iso2ToIso3[iso2];
-
-            console.log("HOVER:", {
-                iso2,
-                iso3,
-                hoveredCode,
-                name: iso3 ? COUNTRY_NAMES[iso3] : null,
-            });
 
             if (iso3) {
                 handleCountryHover(iso3);
@@ -90,18 +91,29 @@ export default function Map() {
             </h1>
 
             {/* SVG-карта */}
-            <div className="mt-6 w-full max-w-4xl mx-auto">
-                <WorldMapSvg
-                    className="w-full h-auto world-map"
-                    onMouseMove={handleSvgMouseMove}
-                    onMouseLeave={() => handleCountryHover(null)}
-                    onClick={handleSvgClick}
-                />
-            </div>
+            <div className="relative w-full max-w-4xl mx-auto">
+                <div className="mt-6 w-full max-w-4xl mx-auto">
+                    <WorldMapSvg
+                        className="w-full h-auto world-map"
+                        onMouseMove={handleSvgMouseMove}
+                        onMouseLeave={() => handleCountryHover(null)}
+                        onClick={handleSvgClick}
+                    />
+                </div>
 
-            {/* Подпись под картой — текущая наведённая страна */}
-            <div className="mt-3 h-5 text-sm text-slate-200 text-center">
-                {hoveredCode ? COUNTRY_NAMES[hoveredCode] || hoveredCode : "\u00A0"}
+                {/* Всплывающая подсказка при наведении на страну */}
+                {hoveredCode && (
+                    <div
+                        className="absolute z-50 bg-slate-800 text-slate-100 px-3 py-1 rounded shadow-lg pointer-events-none text-sm"
+                        style={{
+                            left: mousePos.x,
+                            top: mousePos.y,
+                        }}
+                    >
+                        <div className="font-semibold">{COUNTRY_NAMES[hoveredCode]}</div>
+                        <div className="text-xs opacity-70">{hoveredCode}</div>
+                    </div>
+                )}
             </div>
 
             {/* World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран */}
@@ -125,16 +137,6 @@ export default function Map() {
                     ))}
                 </ul>
             )}
-
-            <button
-                className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
-                onClick={() => {
-                    dispatch(setCountry("US")); // обновляем Redux, чтобы приложение знало, какая страна выбрана
-                    navigate("/country/US");    // переключаем страницу на /country/US
-                }}
-            >
-                Выбрать страну: US
-            </button>
         </div>
     );
 }
