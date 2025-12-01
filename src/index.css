@@ -1,2 +1,15 @@
 @import "tailwindcss";
 
+/* Базовая заливка карты */
+.world-map path {
+    fill: #020617;
+    stroke: #020617;
+    transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+}
+
+/* Подсветка страны при наведении */
+.world-map path:hover {
+    fill: #22c55e;
+    stroke: #22c55e;
+    transform: translateY(-6px);
+}
