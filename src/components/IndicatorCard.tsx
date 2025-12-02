@@ -74,8 +74,6 @@ function formatValue(indicatorId: string, value: number): string {
     }
 }
 
-
-
 export default function IndicatorCard({ label, indicatorId, countryCode }: IndicatorCardProps) {
     const { data, isLoading, error } = useWorldBankIndicator(countryCode, indicatorId);
 

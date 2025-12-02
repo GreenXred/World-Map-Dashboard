@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { INDICATORS } from "../config/Indicators";
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
+import { normalizeWorldBankSeries } from "../utils/worldBankSeries";
 
 import {
     LineChart,           // Контейнер графика
@@ -23,21 +24,54 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
     const [selectedIndicator, setSelectedIndicator] = useState("NY.GDP.PCAP.CD");
     const indicatorId = selectedIndicator;
 
-    const { data, isLoading, error } = useWorldBankIndicator(countryCode, indicatorId);
+    // основная страна
+    const mainCountry = useWorldBankIndicator(countryCode, indicatorId);
 
-    // Если нужно сравнение — запрашиваем данные второй страны
-    const compare = compareCode ? useWorldBankIndicator(compareCode, selectedIndicator) : null;
+    // вторая страна: хук вызываем всегда, если compareCode нет, то подставим ту же страну
+    const compare = useWorldBankIndicator(
+        compareCode ? compareCode : countryCode,
+        indicatorId
+    );
 
-    let chartData: { year: string; value: number | null }[] = [];
+    const data = mainCountry.data;
+    const isLoading = mainCountry.isLoading;
+    const error = mainCountry.error;
 
-    if (data && Array.isArray(data[1])) {
-        chartData = data[1]
-            .filter(entry => entry.value !== null)
-            .map(entry => ({
-                year: entry.date,
-                value: entry.value
-            }))
-            .reverse(); // чтобы график шел от старого к новому
+    // Основная страна
+    const chartData = normalizeWorldBankSeries(data);
+
+    // Страна для сравнения
+    let compareChartData: { year: number; value: number }[] = [];
+
+    if (compareCode && compare.data) {
+        compareChartData = normalizeWorldBankSeries(compare.data);
+    }
+
+    // Объединённые данные для графика // TODO вынести всю функцию в компонент?
+    let mergedData = chartData.map((a) => ({
+        year: a.year,
+        value1: a.value, // значения основной страны
+    }));
+
+    if (compareChartData.length > 0) {
+        const map = new Map<number, any>();
+
+        //  взять основную страну
+        for (const item of mergedData) {
+            map.set(item.year, { ...item });
+        }
+
+        // добавление compare страны
+        for (const item of compareChartData) {
+            if (map.has(item.year)) {
+                map.get(item.year).value2 = item.value;
+            } else {
+                map.set(item.year, { year: item.year, value2: item.value });
+            }
+        }
+
+        // преобразование map снова в массив
+        mergedData = Array.from(map.values()).sort((a, b) => a.year - b.year);
     }
 
     return (
@@ -82,7 +116,7 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
 
                 {!isLoading && !error && chartData.length > 0 && (
                     <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={chartData}>
+                        <LineChart data={mergedData}>
                             <CartesianGrid stroke="#334155" strokeDasharray="3 3" />
                             <XAxis dataKey="year" stroke="#94a3b8" />
                             <YAxis stroke="#94a3b8" />
@@ -94,14 +128,25 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
                                 labelStyle={{ color: "#e2e8f0" }}
                                 itemStyle={{ color: "#a5f3fc" }}
                             />
+                            {/* Основаня линия */}
                             <Line
                                 type="monotone"
-                                dataKey="value"
+                                dataKey="value1"
                                 stroke="#34d399"
                                 strokeWidth={2}
                                 dot={false}
                                 activeDot={{ r: 6 }}
                             />
+                            {/* Дополнительная линия, если активировано сравнение */}
+                            {compareCode && compareChartData.length > 0 && (
+                                <Line
+                                    type="monotone"
+                                    dataKey="value2"
+                                    stroke="#60a5fa"
+                                    strokeWidth={2}
+                                    dot={false}
+                                />
+                            )}
                         </LineChart>
                     </ResponsiveContainer>
                 )}
