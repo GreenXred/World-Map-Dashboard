@@ -15,7 +15,7 @@ export default function Country() {
     const { code } = useParams();
     const dispatch = useDispatch();
     const { t } = useLanguage();
-    const { data: countriesData } = useWorldBankCountries();
+    const { data: countriesData } = useWorldBankCountries();         // Данные стран
     const [compareCode, setCompareCode] = useState<string | "">(""); // Для сравнения стран
 
     useEffect(() => {
@@ -32,6 +32,15 @@ export default function Country() {
         Ecology: t("categoryEcologyDescription"),
         Environment: t("categoryEnvironmentDescription"),
     };
+
+    // Достаём и сортируем список стран
+    let countries: any[] = [];                                        // TODO типизировать any
+
+    if (countriesData && countriesData[1]) {
+        countries = [...countriesData[1]].sort((a: any, b: any) =>   // TODO типизировать any
+            a.name.localeCompare(b.name)
+        );
+    }
 
     // Получаем уникальные категории индикаторов
     const categories = Array.from(
@@ -92,6 +101,28 @@ export default function Country() {
                     )}
                 </div>
             </div>
+            {/* Выбор второй страны для сравнения */}
+            <div className="w-full max-w-5xl mt-4 flex justify-end">
+                <div className="flex flex-col items-start text-slate-200">
+                    <label className="text-sm mb-1 opacity-70">Compare with:</label>
+
+                    <select
+                        className="bg-slate-800 border border-slate-600 text-slate-200 px-3 py-2 rounded-lg focus:ring-2 focus:ring-emerald-400"
+                        value={compareCode}
+                        onChange={(e) => setCompareCode(e.target.value)}
+                    >
+                        <option value="">No comparison</option>
+
+                        {countries
+                            .filter((c) => c.id !== code) // не сравниваем страну саму с собой
+                            .map((c) => (
+                                <option key={c.id} value={c.id}>
+                                    {c.name}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+            </div>
 
             <div className="w-full max-w-5xl space-y-8 mt-6">
                 {categories.map((category) => {
@@ -126,7 +157,7 @@ export default function Country() {
 
             {/* Большой график */}
             {code && (
-                <CountryChart countryCode={code} />
+                <CountryChart countryCode={code} compareCode={compareCode || undefined} />
             )}
 
         </div>

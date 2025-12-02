@@ -16,9 +16,10 @@ import {
 
 type CountryChartProps = {
     countryCode: string;
+    compareCode?: string; // необязательный проп для второй страны
 };
 
-export default function CountryChart({ countryCode }: CountryChartProps) {
+export default function CountryChart({ countryCode, compareCode }: CountryChartProps) {
     const [selectedIndicator, setSelectedIndicator] = useState("NY.GDP.PCAP.CD");
     const indicatorId = selectedIndicator;
 
@@ -40,6 +41,7 @@ export default function CountryChart({ countryCode }: CountryChartProps) {
         <div className="w-full max-w-4xl mt-10 bg-slate-800/60 rounded-2xl p-6 border border-slate-700">
             <h2 className="text-xl font-semibold mb-4 text-slate-100">
                 The history of the indicator for the country {countryCode}
+                {compareCode ? ` vs ${compareCode}` : ""}
             </h2>
 
             {/* Выбор индикатора */}
