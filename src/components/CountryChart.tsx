@@ -25,6 +25,9 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
 
     const { data, isLoading, error } = useWorldBankIndicator(countryCode, indicatorId);
 
+    // Если нужно сравнение — запрашиваем данные второй страны
+    const compare = compareCode ? useWorldBankIndicator(compareCode, selectedIndicator) : null;
+
     let chartData: { year: string; value: number | null }[] = [];
 
     if (data && Array.isArray(data[1])) {

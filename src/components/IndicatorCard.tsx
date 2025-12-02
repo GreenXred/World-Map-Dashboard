@@ -1,6 +1,7 @@
 // Компонент отображает значение индикатора для конкретной страны
 
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
+import { normalizeWorldBankSeries } from "../utils/worldBankSeries";
 import { motion } from "framer-motion";
 
 
@@ -93,17 +94,14 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
 
     // Массив для sparkline (мини-графика)
 
-    let sparkData: { year: string; value: number }[] = [];
+    let sparkData: { year: number; value: number }[] = [];
 
-    if (data && Array.isArray(data[1])) {
-        sparkData = data[1]
-            .filter((item) => item.value !== null)      // убираем пустые значения
-            .slice(0, 20)                               // берём, например, последние 20 записей
-            .map((item) => ({
-                year: item.date,
-                value: item.value as number,
-            }))
-            .reverse();                                 // разворачиваем: старые -> новые
+    if (data) {
+        // Нормализуем все годы
+        const series = normalizeWorldBankSeries(data); // все доступные годы, отсортированы
+
+        // Последние 20 лет для мини-тренда
+        sparkData = series.slice(-20);
     }
 
     // размеры мини-графика в пикселях
@@ -146,7 +144,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
 
             {!isLoading && !error && (
                 <div className="mt-2 flex items-end justify-between">
-    
+
                     <div>
                         <p className="text-2xl font-semibold text-emerald-300">
                             {value !== null ? formatValue(indicatorId, value) : "-"}
