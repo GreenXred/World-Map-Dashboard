@@ -17,10 +17,12 @@ import {
 
 type CountryChartProps = {
     countryCode: string;
-    compareCode?: string; // необязательный проп для второй страны
+    compareCode?: string; // код страны для сравнения
+    compareOptions: { code: string; name: string }[]; // список стран для селекта
+    onChangeCompare: (code: string | undefined) => void; // хэндлер смены страны
 };
 
-export default function CountryChart({ countryCode, compareCode }: CountryChartProps) {
+export default function CountryChart({ countryCode, compareCode, compareOptions, onChangeCompare }: CountryChartProps) {
     const [selectedIndicator, setSelectedIndicator] = useState("NY.GDP.PCAP.CD");
     const indicatorId = selectedIndicator;
 
@@ -74,26 +76,74 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
         mergedData = Array.from(map.values()).sort((a, b) => a.year - b.year);
     }
 
+    // Для корректного отображения больших числен по оси Y
+    function formatYAxisTick(value: number): string {
+        const abs = Math.abs(value);
+
+        if (abs >= 1_000_000_000) {
+            return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+        }
+        if (abs >= 1_000_000) {
+            return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+        }
+        if (abs >= 1_000) {
+            return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
+        }
+
+        return value.toString();
+    }
+
     return (
         <div className="w-full max-w-4xl mt-10 bg-slate-800/60 rounded-2xl p-6 border border-slate-700">
+            {/* Заголовок */}
             <h2 className="text-xl font-semibold mb-4 text-slate-100">
                 The history of the indicator for the country {countryCode}
                 {compareCode ? ` vs ${compareCode}` : ""}
             </h2>
 
-            {/* Выбор индикатора */}
-            <div className="mb-4">
-                <select
-                    value={selectedIndicator}
-                    onChange={(e) => setSelectedIndicator(e.target.value)}
-                    className="bg-slate-800 border border-slate-600 text-slate-100 p-2 rounded-lg"
-                >
-                    {INDICATORS.map((ind) => (
-                        <option key={ind.id} value={ind.id}>
-                            {ind.label}
-                        </option>
-                    ))}
-                </select>
+            {/* Два селекта */}
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 gap-3 mb-4">
+
+                {/* Селект индикатора */}
+                <div className="flex flex-col flex-1">
+                    <label className="text-xs mb-1 text-slate-300 opacity-80">
+                        Indicator:
+                    </label>
+                    <select
+                        value={selectedIndicator}
+                        onChange={(e) => setSelectedIndicator(e.target.value)}
+                        className="bg-slate-800 border border-slate-600 text-slate-100 px-3 py-2 rounded-lg focus:ring-2 focus:ring-emerald-400 w-full"
+                    >
+                        {INDICATORS.map((ind) => (
+                            <option key={ind.id} value={ind.id}>
+                                {ind.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Селект сравнения */}
+                <div className="flex flex-col flex-1">
+                    <label className="text-xs mb-1 text-slate-300 opacity-80">
+                        Compare with:
+                    </label>
+                    <select
+                        className="bg-slate-800 border border-slate-600 text-slate-200 px-3 py-2 rounded-lg focus:ring-2 focus:ring-emerald-400 w-full"
+                        value={compareCode ?? ""}
+                        onChange={(e) =>
+                            onChangeCompare(
+                                e.target.value === "" ? undefined : e.target.value
+                            )
+                        }
+                    >
+                        <option value="">No comparison</option>
+                        {compareOptions.map((c) => (
+                            <option key={c.code} value={c.code}>
+                                {c.name} ({c.code})
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {/* График */}
@@ -119,7 +169,7 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
                         <LineChart data={mergedData}>
                             <CartesianGrid stroke="#334155" strokeDasharray="3 3" />
                             <XAxis dataKey="year" stroke="#94a3b8" />
-                            <YAxis stroke="#94a3b8" />
+                            <YAxis stroke="#94a3b8 " tickFormatter={formatYAxisTick} />
                             <Tooltip
                                 contentStyle={{
                                     backgroundColor: "#0f172a",
@@ -132,6 +182,7 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
                             <Line
                                 type="monotone"
                                 dataKey="value1"
+                                name={countryCode}
                                 stroke="#34d399"
                                 strokeWidth={2}
                                 dot={false}
@@ -142,6 +193,7 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
                                 <Line
                                     type="monotone"
                                     dataKey="value2"
+                                    name={compareCode}
                                     stroke="#60a5fa"
                                     strokeWidth={2}
                                     dot={false}
@@ -151,6 +203,6 @@ export default function CountryChart({ countryCode, compareCode }: CountryChartP
                     </ResponsiveContainer>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
