@@ -11,5 +11,5 @@
 .world-map path:hover {
     fill: #22c55e;
     stroke: #22c55e;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
 }
