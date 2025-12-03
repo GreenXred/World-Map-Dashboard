@@ -1,7 +1,9 @@
 // Компонент отображает значение индикатора для конкретной страны
 
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
-import { normalizeWorldBankSeries } from "../utils/worldBankSeries";
+import { normalizeWorldBankSeries } from "../utils/Formatting";
+import { formatIndicatorValue } from "../utils/Formatting";
+
 import { motion } from "framer-motion";
 
 
@@ -10,69 +12,6 @@ type IndicatorCardProps = {
     indicatorId: string;
     countryCode: string;
 };
-
-// Хелперы форматирования для разных типов индикаторов
-
-function formatCurrency(value: number): string { // Валютные показатели: разделение тысяч
-    return value.toLocaleString(undefined, {
-        maximumFractionDigits: 1,
-    });
-}
-
-function formatPercent(value: number): string { // Процентные показатели
-    return value.toFixed(1) + "%";
-}
-
-function formatPopulation(value: number): string { // Население
-    // Население: в млн с 1 знаком
-    return (value / 1_000_000).toFixed(1) + "M";
-}
-
-function formatYears(value: number): string { // Ожидаемое число лет
-    return value.toFixed(1);
-}
-
-function formatTons(value: number): string { // Выбросы CO2 в тоннах на душу
-    return value.toFixed(1);
-}
-
-// Форматирование данных для отображения
-
-function formatValue(indicatorId: string, value: number): string {
-    switch (indicatorId) {
-        // Экономика 
-        case "NY.GDP.PCAP.CD":
-            return formatCurrency(value);
-
-        case "SL.UEM.TOTL.ZS":
-            return formatPercent(value);
-
-        // Демография 
-        case "SP.POP.TOTL":
-            return formatPopulation(value);
-
-        case "SP.URB.TOTL.IN.ZS":
-            return formatPercent(value);
-
-        // Социальная сфера
-        case "SP.DYN.LE00.IN":
-            return formatYears(value);
-
-        case "SE.PRM.NENR":
-            return formatPercent(value);
-
-        // Экология
-        case "EN.ATM.CO2E.PC":
-            return formatTons(value);
-
-        case "AG.LND.FRST.ZS":
-            return formatPercent(value);
-
-        // Fallback (если новый индикатор не добавлен в хелперы)
-        default:
-            return value.toFixed(1);
-    }
-}
 
 export default function IndicatorCard({ label, indicatorId, countryCode }: IndicatorCardProps) {
     const { data, isLoading, error } = useWorldBankIndicator(countryCode, indicatorId);
@@ -145,7 +84,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
 
                     <div>
                         <p className="text-2xl font-semibold text-emerald-300">
-                            {value !== null ? formatValue(indicatorId, value) : "-"}
+                            {value !== null ? formatIndicatorValue(indicatorId, value) : "-"}
                         </p>
                         <p className="text-sm text-slate-400 mt-1">
                             {year !== null ? `Year: ${year}` : "No data"}

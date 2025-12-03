@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { INDICATORS } from "../config/Indicators";
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
-import { normalizeWorldBankSeries } from "../utils/worldBankSeries";
+import { normalizeWorldBankSeries } from "../utils/Formatting";
 
 import {
     LineChart,           // Контейнер графика
