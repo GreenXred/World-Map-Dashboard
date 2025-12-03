@@ -6,7 +6,6 @@ import { formatIndicatorValue } from "../utils/Formatting";
 
 import { motion } from "framer-motion";
 
-
 type IndicatorCardProps = {
     label: string;
     indicatorId: string;

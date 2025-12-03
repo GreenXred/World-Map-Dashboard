@@ -59,7 +59,7 @@ function formatEnergyPercent(value: number): string {
     return value.toFixed(1) + "%";
 }
 
-// Главная функция — по id индикатора выбираем формат
+// Главная функция — по id индикатора выбирается формат
 
 export function formatIndicatorValue(indicatorId: string, value: number): string {
     switch (indicatorId) {

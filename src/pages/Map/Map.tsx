@@ -14,7 +14,6 @@ export default function Map() {
     const { data, isLoading, error } = useWorldBankCountries(); // запрос списка стран из World Bank
 
     const [hoveredCode, setHoveredCode] = useState<string | null>(null);   // код страны под курсором
-    // const [selectedCode, setSelectedCode] = useState<string | null>(null); // код страны, выбранной кликом
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });              // позиция мыши над картой
 
     // Обновление состояния при наведении курсора на страну
