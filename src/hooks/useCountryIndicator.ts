@@ -2,7 +2,6 @@
 // Через normalizeWorldBankSeries нормализирует данные { year, value }.
 // Склеивает эти два ряда по году в один массив:
 
-
 import { useMemo } from "react";
 import { normalizeWorldBank, type WorldBankIndicatorResponse } from "../utils/Formatting";
 

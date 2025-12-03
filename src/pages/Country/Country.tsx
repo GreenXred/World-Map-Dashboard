@@ -1,3 +1,9 @@
+// Компонент:
+//получает код страны,
+// тянет список стран,
+// группирует индикаторы по категориям,
+// внизу рисует CountryChart.
+
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -5,11 +11,10 @@ import { useState } from "react";
 
 import { setCountry } from "../../store/CountrySlice";
 import { useLanguage } from "../../i18next/LanguageContext";
-import { INDICATORS } from "../../config/Indicators";
-import IndicatorCard from "../../components/IndicatorCard";
+import { INDICATORS, type IndicatorConfig } from "../../config/Indicators";
+import IndicatorCategory from "../../components/IndicatorCategory";
 import CountryChart from "../../components/CountryChart";
 import { useWorldBankCountries } from "../../api/WorldBank";
-
 
 export default function Country() {
     const { code } = useParams();
@@ -25,19 +30,47 @@ export default function Country() {
     }, [code, dispatch]);
 
     // Описания категорий индикаторов
-    const categoryDescriptions: Record<string, string> = {
+    const categoryDescriptions: Record<IndicatorConfig["category"], string> = {
         Economy: t("categoryEconomyDescription"),
         Demography: t("categoryDemographyDescription"),
-        Social: t("categorySocialDescription"),
+        "Quality of Life": t("categoryQualityOfLifeDescription" as any),
+        "Social Sphere": t("categorySocialSphereDescription" as any),
         Ecology: t("categoryEcologyDescription"),
         Environment: t("categoryEnvironmentDescription"),
     };
 
-    // Достаём и сортируем список стран
-    let countries: any[] = [];                                        // TODO типизировать any
+    const categoryAccent: Record<IndicatorConfig["category"], string> = {
+        Economy: "bg-emerald-400",
+        Demography: "bg-sky-400",
+        "Quality of Life": "bg-rose-400",
+        "Social Sphere": "bg-violet-400",
+        Ecology: "bg-teal-300",
+        Environment: "bg-lime-300",
+    };
 
-    if (countriesData && countriesData[1]) {
-        countries = [...countriesData[1]].sort((a: any, b: any) =>   // TODO типизировать any
+    // Тип одной страны из World Bank API
+    type WorldBankCountry = {
+        id: string;
+        name: string;
+        iso2Code: string;
+        region?: { value: string } | null;
+        incomeLevel?: { value: string } | null;
+    };
+
+    // Тип упрощённого объекта для селекта сравнения
+    type CompareOption = {
+        code: string;
+        name: string;
+    };
+
+    // Достаём и сортируем список стран
+    let countries: WorldBankCountry[] = [];
+
+    // Проверка, что структура такая, как в World Bank API
+    if (Array.isArray(countriesData) && Array.isArray(countriesData[1])) {
+        const rawCountries = countriesData[1] as WorldBankCountry[];
+
+        countries = [...rawCountries].sort((a, b) =>
             a.name.localeCompare(b.name)
         );
     }
@@ -48,28 +81,30 @@ export default function Country() {
     );
 
     // Находим данные страны по ISO3-коду
-    let countryInfo = null;
+    let countryInfo: WorldBankCountry | undefined;
 
-    if (countriesData && countriesData[1]) {
-        countryInfo = countriesData[1].find(
-            (c: any) => c.id.toUpperCase() === code?.toUpperCase() // TODO типизировать any
+    if (Array.isArray(countriesData) && Array.isArray(countriesData[1])) {
+        const rawCountries = countriesData[1] as WorldBankCountry[];
+
+        countryInfo = rawCountries.find(
+            (c) => c.id.toUpperCase() === code?.toUpperCase()
         );
     }
 
     // Получение ISO2 для флага
-    function getIso2(c: any): string | null { // TODO типизировать any
+    function getIso2(c: WorldBankCountry | undefined): string | null {
         if (!c || !c.iso2Code) return null;
         return c.iso2Code.toLowerCase();
     }
 
-    const iso2 = countryInfo ? getIso2(countryInfo) : null;
+    const iso2 = getIso2(countryInfo);
 
-    // Список стран для селекта "Compare with" в графике // TODO типизировать
-    const compareOptions = countries                  // взять массив всех стран
-        .filter((c: any) => c.id !== code)            // убрать текущую страну 
-        .map((c: any) => ({                           // превратить в простой объект
-            code: c.id,                               // ISO3-код страны
-            name: c.name,                             // название страны
+    // Список стран для селекта "Compare with" в графике
+    const compareOptions: CompareOption[] = countries
+        .filter((c) => c.id !== code) // убрать текущую страну
+        .map((c) => ({
+            code: c.id,  // ISO3-код страны
+            name: c.name // название страны
         }));
 
     return (
@@ -86,7 +121,7 @@ export default function Country() {
                         className="rounded shadow"
                     />
                 )}
-                {/* Хеддер */}
+
                 <div className="flex flex-col">
                     <h1 className="text-3xl font-bold text-emerald-300">
                         {countryInfo?.name || code}
@@ -117,26 +152,14 @@ export default function Country() {
                     );
 
                     return (
-                        <section key={category}>
-                            <h2 className="text-lg font-semibold text-slate-200 mb-3">
-                                {category}
-                            </h2>
-
-                            <p className="text-sm text-slate-400 mb-3">
-                                {categoryDescriptions[category]}
-                            </p>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {indicatorsInCategory.map((indicator) => (
-                                    <IndicatorCard
-                                        key={indicator.id}
-                                        label={indicator.label}
-                                        indicatorId={indicator.id}
-                                        countryCode={code || ""}
-                                    />
-                                ))}
-                            </div>
-                        </section>
+                        <IndicatorCategory
+                            key={category}
+                            title={category}
+                            description={categoryDescriptions[category]}
+                            accentClass={categoryAccent[category]}
+                            indicators={indicatorsInCategory}
+                            countryCode={code ?? ""} 
+                        />
                     );
                 })}
             </div>
@@ -150,7 +173,6 @@ export default function Country() {
                     onChangeCompare={setCompareCode}
                 />
             )}
-
         </div>
     );
 }

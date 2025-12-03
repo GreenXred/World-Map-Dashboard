@@ -1,4 +1,5 @@
 // Компонент отображает значение индикатора для конкретной страны
+//тянет данные одного индикатора, показывает число + мини-график.
 
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
 import { normalizeWorldBank } from "../utils/Formatting";

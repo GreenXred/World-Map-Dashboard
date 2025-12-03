@@ -1,16 +1,31 @@
+// Для одной точки временного ряда World Bank
+export type WorldBankIndicatorPoint = {
+    date: string;          // "2023"
+    value: number | null;  // может быть null, если данных за год нет
+};
+
+// Для полного ответа World Bank по индикатору
+export type WorldBankIndicatorResponse = [unknown, WorldBankIndicatorPoint[]];
+
 // Нормализация ответа World Bank в массиве { year, value } по возрастанию года
 export function normalizeWorldBank(
     rawData: WorldBankIndicatorResponse | undefined
 ): { year: number; value: number }[] {
-
-    if (!rawData) {
+    // 1) Если вообще нет данных — возвращаем пустой массив
+    if (!rawData || !Array.isArray(rawData)) {
         return [];
     }
 
-    const [, points] = rawData;
+    const points = rawData[1];
 
+    // 2) Если второй элемент не массив — тоже возвращаем []
+    if (!Array.isArray(points)) {
+        return [];
+    }
+
+    // 3) Фильтруем и приводим к нужному виду
     return points
-        .filter((item: WorldBankIndicatorPoint) => item.value !== null)
+        .filter((item) => item && item.value !== null && item.date)
         .map((item) => ({
             year: Number(item.date),
             value: Number(item.value),
@@ -128,12 +143,3 @@ export function formatIndicatorValue(indicatorId: string, value: number): string
             return value.toFixed(1);
     }
 }
-
-// Для одной точки временного ряда World Bank
-export type WorldBankIndicatorPoint = {
-    date: string;          // "2023"
-    value: number | null;  // может быть null, если данных за год нет
-};
-
-// Для полного ответа World Bank по индикатору
-export type WorldBankIndicatorResponse = [unknown, WorldBankIndicatorPoint[]];
