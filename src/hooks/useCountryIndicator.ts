@@ -15,7 +15,7 @@ export type CountryChartPoint = {
     value2?: number | null;     // вторая страна, если есть
 };
 
-export function useCountryIndicatorSeries(
+export function useCountryIndicator(
     mainRaw: any[] | undefined,
     compareRaw?: any[] | undefined
 ) {

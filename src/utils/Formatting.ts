@@ -59,6 +59,26 @@ function formatEnergyPercent(value: number): string {
     return value.toFixed(1) + "%";
 }
 
+// Форматирование крупных чисел для оси Y на графиках
+export function formatYAxisTick(value: number): string {
+    const abs = Math.abs(value);
+
+    if (abs >= 1_000_000_000) {
+        return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+    }
+
+    if (abs >= 1_000_000) {
+        return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+
+    if (abs >= 1_000) {
+        return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
+    }
+
+    return value.toString();
+}
+
+
 // Главная функция — по id индикатора выбирается формат
 
 export function formatIndicatorValue(indicatorId: string, value: number): string {

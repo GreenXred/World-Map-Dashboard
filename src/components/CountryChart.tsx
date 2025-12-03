@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { INDICATORS } from "../config/Indicators";
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
-import { useCountryIndicatorSeries } from "../hooks/useCountryIndicator";
+import { formatYAxisTick } from "../utils/Formatting";
+import { useCountryIndicator } from "../hooks/useCountryIndicator";
 import {
     LineChart,           // Контейнер графика
     Line,                // Линия графика
@@ -47,20 +48,10 @@ export default function CountryChart({
     const isLoading = main.isLoading;
     const error = main.error;
 
-    const { mergedData, hasCompareData } = useCountryIndicatorSeries(
+    const { mergedData, hasCompareData } = useCountryIndicator(
         data,
         compareCode ? compare.data : undefined
     );
-
-    // Форматирование оси Y, для корректного отображения больших чисел
-
-    function formatYAxisTick(value: number): string {
-        const abs = Math.abs(value);
-        if (abs >= 1_000_000_000) return (value / 1_000_000_000).toFixed(1) + "B";
-        if (abs >= 1_000_000) return (value / 1_000_000).toFixed(1) + "M";
-        if (abs >= 1_000) return (value / 1_000).toFixed(1) + "k";
-        return value.toString();
-    }
 
     return (
         <div className="w-full max-w-4xl mt-10 bg-slate-900/70 border border-slate-700/70 rounded-2xl p-6 md:p-7 shadow-lg shadow-slate-900/30">
