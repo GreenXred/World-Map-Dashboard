@@ -43,7 +43,6 @@ export default function CountryChart({
         selectedIndicator
     );
 
-    // Короткие переменные
     const data = main.data;
     const isLoading = main.isLoading;
     const error = main.error;
