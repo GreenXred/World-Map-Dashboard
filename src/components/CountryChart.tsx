@@ -94,26 +94,29 @@ export default function CountryChart({ countryCode, compareCode, compareOptions,
     }
 
     return (
-        <div className="w-full max-w-4xl mt-10 bg-slate-800/60 rounded-2xl p-6 border border-slate-700">
+        <div className="w-full max-w-4xl mt-10 bg-slate-900/70 border border-slate-700/70 rounded-2xl p-6 md:p-7 shadow-lg shadow-slate-900/30">
             {/* Заголовок */}
-            <h2 className="text-xl font-semibold mb-4 text-slate-100">
+            <h2 className="text-lg md:text-xl font-semibold tracking-tight text-slate-50 mb-5">
                 The history of the indicator for the country {countryCode}
                 {compareCode ? ` vs ${compareCode}` : ""}
             </h2>
 
             {/* Два селекта */}
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 gap-3 mb-4">
+            <div className="flex flex-wrap items-end gap-3 md:gap-4 mb-4 pl-12">
 
                 {/* Селект индикатора */}
-                <div className="flex flex-col flex-1">
-                    <label className="text-xs mb-1 text-slate-300 opacity-80">
-                        Indicator:
+                <div className="flex flex-col flex-1 min-w-[230px] max-w-sm">
+                    <label className="text-[11px] font-medium text-slate-400 mb-1">
+                        Indicator
                     </label>
                     <select
                         value={selectedIndicator}
                         onChange={(e) => setSelectedIndicator(e.target.value)}
-                        className="bg-slate-800 border border-slate-600 text-slate-100 px-3 py-2 rounded-lg focus:ring-2 focus:ring-emerald-400 w-full"
+                        className="h-9 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-3 text-sm text-slate-50
+                   focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:border-emerald-400/60
+                   transition"
                     >
+
                         {INDICATORS.map((ind) => (
                             <option key={ind.id} value={ind.id}>
                                 {ind.label}
@@ -123,12 +126,14 @@ export default function CountryChart({ countryCode, compareCode, compareOptions,
                 </div>
 
                 {/* Селект сравнения */}
-                <div className="flex flex-col flex-1">
-                    <label className="text-xs mb-1 text-slate-300 opacity-80">
-                        Compare with:
+                <div className="flex flex-col flex-1 min-w-[230px] max-w-sm">
+                    <label className="text-[11px] font-medium text-slate-400 mb-1">
+                        Compare with
                     </label>
                     <select
-                        className="bg-slate-800 border border-slate-600 text-slate-200 px-3 py-2 rounded-lg focus:ring-2 focus:ring-emerald-400 w-full"
+                        className="h-9 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-3 text-sm text-slate-50
+                   focus:outline-none focus:ring-2 focus:ring-emerald-400/70 focus:border-emerald-400/60
+                   transition"
                         value={compareCode ?? ""}
                         onChange={(e) =>
                             onChangeCompare(
