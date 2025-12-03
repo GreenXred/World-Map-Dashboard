@@ -1,18 +1,21 @@
 // Нормализация ответа World Bank в массиве { year, value } по возрастанию года
+export function normalizeWorldBank(
+    rawData: WorldBankIndicatorResponse | undefined
+): { year: number; value: number }[] {
 
-export function normalizeWorldBankSeries(rawData: any): { year: number; value: number }[] { // TODO типизировать
-    // Если данных нет или формат другой — возвращаем пустой массив, чтобы не ломать рендер
-    if (!rawData || !Array.isArray(rawData[1])) {
+    if (!rawData) {
         return [];
     }
 
-    return rawData[1]
-        .filter((item) => item && item.value !== null) // убираем записи без значения
+    const [, points] = rawData;
+
+    return points
+        .filter((item: WorldBankIndicatorPoint) => item.value !== null)
         .map((item) => ({
-            year: Number(item.date),   // "2024" -> 2024
-            value: Number(item.value), // приводим к числу
+            year: Number(item.date),
+            value: Number(item.value),
         }))
-        .sort((a, b) => a.year - b.year); // упорядочиваем по годам: от старых к новым
+        .sort((a, b) => a.year - b.year);
 }
 
 // Базовые форматеры под разные типы чисел
@@ -78,7 +81,6 @@ export function formatYAxisTick(value: number): string {
     return value.toString();
 }
 
-
 // Главная функция — по id индикатора выбирается формат
 
 export function formatIndicatorValue(indicatorId: string, value: number): string {
@@ -127,3 +129,11 @@ export function formatIndicatorValue(indicatorId: string, value: number): string
     }
 }
 
+// Для одной точки временного ряда World Bank
+export type WorldBankIndicatorPoint = {
+    date: string;          // "2023"
+    value: number | null;  // может быть null, если данных за год нет
+};
+
+// Для полного ответа World Bank по индикатору
+export type WorldBankIndicatorResponse = [unknown, WorldBankIndicatorPoint[]];

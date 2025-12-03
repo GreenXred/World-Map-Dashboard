@@ -1,6 +1,10 @@
+// Хук принимает ответы World Bank по основной и второй стране.
+// Через normalizeWorldBankSeries нормализирует данные { year, value }.
+// Склеивает эти два ряда по году в один массив:
+
 
 import { useMemo } from "react";
-import { normalizeWorldBankSeries } from "../utils/Formatting";
+import { normalizeWorldBank, type WorldBankIndicatorResponse } from "../utils/Formatting";
 
 // Точка нормализованных данных World Bank
 type NormalizedPoint = {
@@ -16,23 +20,19 @@ export type CountryChartPoint = {
 };
 
 export function useCountryIndicator(
-    mainRaw: any[] | undefined,
-    compareRaw?: any[] | undefined
+    mainRaw: WorldBankIndicatorResponse | undefined,
+    compareRaw?: WorldBankIndicatorResponse | undefined
 ) {
-    
+
     const { mergedData, hasCompareData } = useMemo(() => {
         // Если нет данных основной страны — возвращаем пустой массив
-        if (!mainRaw || mainRaw.length === 0) {
+        if (!mainRaw) {
             return { mergedData: [] as CountryChartPoint[], hasCompareData: false };
         }
 
         // Нормализуем ряды через helper
-        const mainSeries: NormalizedPoint[] = normalizeWorldBankSeries(mainRaw);
-
-        const compareSeries: NormalizedPoint[] =
-            compareRaw && compareRaw.length > 0
-                ? normalizeWorldBankSeries(compareRaw)
-                : [];
+        const mainSeries: NormalizedPoint[] = normalizeWorldBank(mainRaw);
+        const compareSeries: NormalizedPoint[] = compareRaw ? normalizeWorldBank(compareRaw) : [];
 
         // Базовый массив по основной стране
         let merged: CountryChartPoint[] = mainSeries.map((p) => ({
@@ -44,15 +44,17 @@ export function useCountryIndicator(
         if (compareSeries.length > 0) {
             const map = new Map<number, CountryChartPoint>();
 
-            // Основная страну
+            // Основная страна
             for (const item of merged) {
                 map.set(item.year, { ...item });
             }
 
             // Значения второй страны
             for (const item of compareSeries) {
-                if (map.has(item.year)) {
-                    const existing = map.get(item.year)!;
+                const existing = map.get(item.year);
+
+                if (existing) {
+
                     existing.value2 = item.value;
                 } else {
                     map.set(item.year, {

@@ -1,7 +1,7 @@
 // Компонент отображает значение индикатора для конкретной страны
 
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
-import { normalizeWorldBankSeries } from "../utils/Formatting";
+import { normalizeWorldBank } from "../utils/Formatting";
 import { formatIndicatorValue } from "../utils/Formatting";
 
 import { motion } from "framer-motion";
@@ -34,7 +34,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
 
     if (data) {
         // Нормализуем все годы
-        const series = normalizeWorldBankSeries(data); // все доступные годы, отсортированы
+        const series = normalizeWorldBank(data); // все доступные годы, отсортированы
 
         // Последние 20 лет для мини-тренда
         sparkData = series.slice(-20);
