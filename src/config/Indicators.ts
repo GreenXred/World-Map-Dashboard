@@ -1,7 +1,7 @@
 export type IndicatorConfig = {
     id: string;                    // уникальный идентификатор индикатора, например "SP.POP.TOTL"
     label: string;                 // читаемое название индикатора, например "Население, всего"
-    category: string;              // категория индикатора, например "Население"
+    category: "Economy" | "Demography" | "Quality of Life" | "Social Sphere" | "Ecology" | "Environment"; // категория индикатора
     source: "worldBank" | "unSdg"; // источник данных индикатора World Bank или United Nations 
 };
 
@@ -33,7 +33,7 @@ export const INDICATORS: IndicatorConfig[] = [
     {
         id: "SP.DYN.LE00.IN",
         label: "Life expectancy at birth, total (years)",
-        category: "Quality of life",
+        category: "Quality of Life",
         source: "worldBank",
     },
     {
