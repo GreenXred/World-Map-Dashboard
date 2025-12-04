@@ -67,12 +67,24 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
 
     return (
         <motion.div
-            className="bg-slate-800 p-4 rounded-xl shadow hover:shadow-lg transition"
+            className="
+                relative overflow-hidden
+                rounded-2xl
+                border border-emerald-400/10
+                bg-slate-900/40
+                bg-gradient-to-br from-emerald-500/5 via-slate-900/40 to-slate-950/90
+                backdrop-blur-xl
+                shadow-[0_18px_50px_rgba(0,0,0,0.75)]
+                p-4
+                transition
+                hover:border-emerald-400/40
+                hover:shadow-[0_24px_70px_rgba(0,0,0,0.9)]
+                hover:-translate-y-0.5
+            "
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            whileHover={{ scale: 1.03 }}
-
+            whileHover={{ scale: 1.02 }}
         >
             <p className="text-sm text-slate-400 mb-1">{label}</p>
 

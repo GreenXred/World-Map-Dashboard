@@ -54,7 +54,18 @@ export default function CountryChart({
     );
 
     return (
-        <div className="w-full max-w-4xl mt-10 bg-slate-900/70 border border-slate-700/70 rounded-2xl p-6 md:p-7 shadow-lg shadow-slate-900/30">
+        <div
+            className="
+                w-full max-w-5xl mt-10
+                rounded-3xl
+                border border-emerald-400/15
+                bg-slate-900/40
+                bg-gradient-to-b from-emerald-500/5 via-slate-900/40 to-slate-950/90
+                backdrop-blur-2xl
+                shadow-[0_24px_80px_rgba(0,0,0,0.85)]
+                px-6 py-6 md:px-8 md:py-7
+            "
+        >
 
             {/* Заголовок */}
             <h2 className="text-lg md:text-xl font-semibold tracking-tight text-slate-50 mb-5">
@@ -63,7 +74,7 @@ export default function CountryChart({
             </h2>
 
             {/* Два селекта в строку */}
-            <div className="flex flex-wrap items-end gap-3 md:gap-4 mb-4 pl-12">
+            <div className="flex flex-wrap items-end gap-3 md:gap-4 mb-4 pl-26">
 
                 {/* Селект индикатора */}
                 <div className="flex flex-col flex-1 min-w-[230px] max-w-sm">
