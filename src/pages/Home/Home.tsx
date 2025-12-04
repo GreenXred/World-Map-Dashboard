@@ -246,7 +246,7 @@ const Home: React.FC = () => {
                                 <div className="text-slate-400 text-sm">
                                     Go to the <span className="font-medium text-slate-200">Map</span> page
                                     and click on any country. This will open a dedicated dashboard for that
-                                    country.
+                                    country. There is also a complete list of countries and aggregators below the map.
                                 </div>
                             </div>
                         </div>
