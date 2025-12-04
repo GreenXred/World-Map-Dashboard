@@ -39,7 +39,20 @@ const Home: React.FC = () => {
                     </div>
 
                     {/* Правая колонка: демо-карточка страны */}
-                    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xl shadow-emerald-500/10">
+                    <div className="
+                            bg-slate-900/40
+                            bg-gradient-to-br from-emerald-500/10 via-slate-900/40 to-slate-950/90
+                            border border-emerald-400/20
+                            rounded-3xl
+                            backdrop-blur-2xl
+                            shadow-[0_20px_70px_rgba(0,0,0,0.85)]
+                            p-5 md:p-6
+                            transition
+                            hover:border-emerald-400/50
+                            hover:shadow-[0_26px_90px_rgba(0,0,0,0.95)]
+                            hover:-translate-y-0.5
+                        "
+                    >
                         <div className="flex items-baseline justify-between mb-4">
                             <div>
                                 <div className="text-xs uppercase tracking-wide text-slate-400">
@@ -54,7 +67,14 @@ const Home: React.FC = () => {
 
                         <div className="space-y-4">
                             {/* Индикатор GDP */}
-                            <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3">
+                            <div className="  
+                                    rounded-2xl
+                                    bg-slate-950/40
+                                    border border-slate-800/80
+                                    px-3 py-3
+                                    shadow-[0_10px_30px_rgba(0,0,0,0.7)]
+                                "
+                            >
                                 <div className="flex justify-between items-baseline mb-1">
                                     <div className="text-xs text-slate-400">
                                         GDP per capita
@@ -89,7 +109,14 @@ const Home: React.FC = () => {
                             </div>
 
                             {/* Индикатор Population */}
-                            <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3">
+                            <div className="  
+                                    rounded-2xl
+                                    bg-slate-950/40
+                                    border border-slate-800/80
+                                    px-3 py-3
+                                    shadow-[0_10px_30px_rgba(0,0,0,0.7)]
+                                "
+                            >
                                 <div className="flex justify-between items-baseline mb-1">
                                     <div className="text-xs text-slate-400">
                                         Population
@@ -136,7 +163,18 @@ const Home: React.FC = () => {
 
                     <div className="grid gap-6 grid-cols-3">
                         {/* Фича  1 */}
-                        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-emerald-400/40 transition">
+                        <div className="    
+                                rounded-2xl
+                                border border-emerald-400/10
+                                bg-slate-900/40
+                                backdrop-blur-xl
+                                px-4 py-4
+                                shadow-[0_16px_45px_rgba(0,0,0,0.8)]
+                                transition
+                                hover:border-emerald-400/40
+                                hover:-translate-y-0.5
+                            "
+                        >
                             <div className="text-3xl mb-3">🗺️</div>
                             <h3 className="font-semibold mb-2">Interactive Map</h3>
                             <p className="text-slate-400 text-sm">
@@ -146,7 +184,18 @@ const Home: React.FC = () => {
                         </div>
 
                         {/* Фича 2 */}
-                        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-sky-400/40 transition">
+                        <div className="            
+                                rounded-2xl
+                                border border-emerald-400/10
+                                bg-slate-900/40
+                                backdrop-blur-xl
+                                px-4 py-4
+                                shadow-[0_16px_45px_rgba(0,0,0,0.8)]
+                                transition
+                                hover:border-emerald-400/40
+                                hover:-translate-y-0.5
+                            "
+                        >
                             <div className="text-3xl mb-3">📈</div>
                             <h3 className="font-semibold mb-2">Indicator Trends</h3>
                             <p className="text-slate-400 text-sm">
@@ -156,7 +205,18 @@ const Home: React.FC = () => {
                         </div>
 
                         {/* Фича 3 */}
-                        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-purple-400/40 transition">
+                        <div className="            
+                                rounded-2xl
+                                border border-emerald-400/10
+                                bg-slate-900/40
+                                backdrop-blur-xl
+                                px-4 py-4
+                                shadow-[0_16px_45px_rgba(0,0,0,0.8)]
+                                transition
+                                hover:border-emerald-400/40
+                                hover:-translate-y-0.5
+                            "
+                        >
                             <div className="text-3xl mb-3">⚖️</div>
                             <h3 className="font-semibold mb-2">Compare Countries</h3>
                             <p className="text-slate-400 text-sm">
@@ -167,7 +227,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
                 {/* Как это работает */}
-                <div className="mt-20 border-t border-slate-800 pt-10">
+                <div className="mt-20 border-t border-slate-800/70 pt-10">
                     <h2 className="text-2xl font-bold mb-6">How it works</h2>
                     <p className="text-slate-400 text-sm max-w-2xl mb-8">
                         The dashboard is built around a simple flow: pick a country, explore its
