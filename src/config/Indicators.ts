@@ -55,8 +55,8 @@ export const INDICATORS: IndicatorConfig[] = [
         source: "worldBank",
     },
     {
-        id: "EN.ATM.GHGT.KT.CE",
-        label: "Greenhouse gas emissions (kt CO₂ eq.)",
+        id: "EG.USE.PCAP.KG.OE", // https://api.worldbank.org/v2/country/YEM/indicator/EG.USE.PCAP.KG.OE?format=json
+        label: "Energy use (kg of oil equivalent per capita)",
         category: "Ecology",
         source: "worldBank",
     },
