@@ -61,15 +61,14 @@ function formatBirthsPerWoman(value: number): string {
     return value.toFixed(2);
 }
 
-// Парниковые испарения в килотоннах - показываем в млн тонн
-function formatKtCO2eq(value: number): string {
-    const megaTons = value / 1_000; // 1000 kt = 1 Mt
-    return megaTons.toFixed(1) + " Mt";
-}
-
 // Загрязненность воздуха
 function formatMicrograms(value: number): string {
     return value.toFixed(1);
+}
+
+// Потреблении энергии
+function formatEnergyToUse(value: number): string {
+    return value.toFixed(1) + " kg"
 }
 
 // Зеленая энергия
@@ -102,7 +101,7 @@ export function formatIndicatorValue(indicatorId: string, value: number): string
     switch (indicatorId) {
         // ECONOMY
         case "NY.GDP.PCAP.CD":
-            return formatCurrency(value);
+            return "$" + formatCurrency(value);
 
         case "SL.UEM.TOTL.ZS":
             return formatPercent(value);
@@ -127,8 +126,8 @@ export function formatIndicatorValue(indicatorId: string, value: number): string
             return formatPercent(value);
 
         // ECOLOGY
-        case "EN.ATM.GHGT.KT.CE":
-            return formatKtCO2eq(value);
+        case "EG.USE.PCAP.KG.OE":
+            return formatEnergyToUse(value);
 
         case "EN.ATM.PM25.MC.M3":
             return formatMicrograms(value);
