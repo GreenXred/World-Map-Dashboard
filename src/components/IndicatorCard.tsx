@@ -86,37 +86,48 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
             transition={{ duration: 0.4 }}
             whileHover={{ scale: 1.02 }}
         >
-            <p className="text-sm text-slate-400 mb-1">{label}</p>
+            <p className="text-xs font-medium text-slate-300 tracking-wide mb-1">
+                {label}
+            </p>
+            <div className="h-px w-12 mb-2 bg-gradient-to-r from-emerald-400/70 via-emerald-300/40 to-transparent" />
 
             {isLoading && <p className="text-slate-500 text-sm">Loading...</p>}
             {error && <p className="text-red-400 text-sm">Error loading data</p>}
 
             {!isLoading && !error && (
-                <div className="mt-2 flex items-end justify-between">
-
+                <div className="mt-3 flex items-end justify-between gap-3">
                     <div>
                         <p className="text-2xl font-semibold text-emerald-300">
                             {value !== null ? formatIndicatorValue(indicatorId, value) : "-"}
                         </p>
-                        <p className="text-sm text-slate-400 mt-1">
+                        <p className="text-xs text-slate-400 mt-1">
                             {year !== null ? `Year: ${year}` : "No data"}
                         </p>
                     </div>
 
                     {sparkPoints && (
-                        <svg
-                            width={sparkWidth}
-                            height={sparkHeight}
-                            viewBox={`0 0 ${sparkWidth} ${sparkHeight}`}
-                            className="ml-3 text-emerald-400"
-                        >
-                            <polyline
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                                points={sparkPoints}
-                            />
-                        </svg>
+                        <div 
+                            className="
+                                h-12 w-28 
+                                rounded-xl 
+                                bg-slate-950/40 
+                                border border-slate-800/80 
+                                flex items-center 
+                                justify-center">
+                            <svg
+                                width={sparkWidth}
+                                height={sparkHeight}
+                                viewBox={`0 0 ${sparkWidth} ${sparkHeight}`}
+                                className="text-emerald-400"
+                            >
+                                <polyline
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    points={sparkPoints}
+                                />
+                            </svg>
+                        </div>
                     )}
                 </div>
             )}

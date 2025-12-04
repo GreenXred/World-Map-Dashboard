@@ -123,36 +123,66 @@ export default function Country() {
         // Страница страны с заголовком, категориями индикаторов и большим графиком
         <div className="flex flex-col items-center p-6">
             {/* Хеддер */}
-            <div className="flex items-center gap-4 mt-2 mb-6 bg-slate-800/40 px-6 py-4 rounded-xl shadow-lg border border-slate-700/50">
-                {/* Флаг страны */}
+            {/* Хеддер — стеклянная карточка страны */}
+            <div
+                className="
+                    w-full max-w-5xl
+                    mt-4 mb-10
+                    rounded-3xl
+                    border border-emerald-400/15
+                    bg-slate-900/40
+                    bg-gradient-to-r from-emerald-500/10 via-slate-900/40 to-slate-950/90
+                    backdrop-blur-2xl
+                    shadow-[0_24px_80px_rgba(0,0,0,0.85)]
+                    px-6 py-5 md:px-8 py-6
+                    flex items-center gap-6
+                "
+            >
+                {/* Флаг в «рамке» */}
                 {iso2 && (
-                    <img
-                        src={`https://flagcdn.com/80x60/${iso2}.png`}
-                        alt={countryInfo?.name}
-                        className="rounded shadow"
-                    />
+                    <div className="shrink-0 rounded-2xl overflow-hidden border border-slate-700/70 shadow-lg shadow-black/60">
+                        <img
+                            src={`https://flagcdn.com/160x120/${iso2}.png`}
+                            alt={countryInfo?.name}
+                            className="block w-28 h-20 object-cover"
+                        />
+                    </div>
                 )}
 
-                <div className="flex flex-col">
-                    <h1 className="text-3xl font-bold text-emerald-300">
+                {/* Текстовая часть */}
+                <div className="flex-1">
+                    <p className="text-[11px] uppercase tracking-[0.16em] text-emerald-300/80 mb-1">
+                        Country overview
+                    </p>
+
+                    <h1 className="text-2xl md:text-3xl font-semibold text-slate-50">
                         {countryInfo?.name || code}
                     </h1>
 
-                    <p className="text-sm text-slate-400">
-                        ISO3: <span className="text-slate-200">{code}</span>
-                    </p>
-
-                    {countryInfo?.region && (
-                        <p className="text-sm text-slate-400">
-                            Region: <span className="text-slate-200">{countryInfo.region.value}</span>
+                    <div className="mt-3 grid gap-1 text-xs md:text-sm text-slate-300">
+                        <p>
+                            <span className="text-slate-400">ISO3:</span>{" "}
+                            <span className="text-slate-100">{code}</span>
                         </p>
-                    )}
 
-                    {countryInfo?.incomeLevel && (
-                        <p className="text-sm text-slate-400">
-                            Income level: <span className="text-slate-200">{countryInfo.incomeLevel.value}</span>
-                        </p>
-                    )}
+                        {countryInfo?.region && (
+                            <p>
+                                <span className="text-slate-400">Region:</span>{" "}
+                                <span className="text-slate-100">
+                                    {countryInfo.region.value}
+                                </span>
+                            </p>
+                        )}
+
+                        {countryInfo?.incomeLevel && (
+                            <p>
+                                <span className="text-slate-400">Income level:</span>{" "}
+                                <span className="text-slate-100">
+                                    {countryInfo.incomeLevel.value}
+                                </span>
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -169,7 +199,7 @@ export default function Country() {
                             description={categoryDescriptions[category]}
                             accentClass={categoryAccent[category]}
                             indicators={indicatorsInCategory}
-                            countryCode={code ?? ""} 
+                            countryCode={code ?? ""}
                         />
                     );
                 })}

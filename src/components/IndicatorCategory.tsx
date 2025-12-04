@@ -25,18 +25,20 @@ export default function IndicatorCategory({
     return (
         <section className="w-full max-w-5xl mx-auto mb-8">
             {/* Заголовок категории */}
-            <div className="flex items-center mb-1">
-                <div className={`w-2 h-6 rounded-full mr-3 ${accentClass}`} />
-                <h2 className="text-lg font-semibold text-slate-100">
-                    {title}
-                </h2>
-            </div>
+            <div className="mb-4 flex items-start gap-3">
+                <div className={`mt-1 w-1 h-5 rounded-full ${accentClass}`} />
 
-            {description && (
-                <p className="text-sm text-slate-400 mb-3">
-                    {description}
-                </p>
-            )}
+                <div>
+                    <h2 className="text-sm md:text-base font-semibold text-slate-50">
+                        {title}
+                    </h2>
+                    {description && (
+                        <p className="text-xs md:text-sm text-slate-400 mt-1">
+                            {description}
+                        </p>
+                    )}
+                </div>
+            </div>
 
             {/* Сетка карточек индикаторов */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
