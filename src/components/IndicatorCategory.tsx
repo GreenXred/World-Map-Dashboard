@@ -1,4 +1,8 @@
 // Компонент отвечает только за верстку + рендер IndicatorCard по массиву в Country.tsx
+// Рисует заголовок категории,
+// Рисует тонкую цветную полоску,
+// Рисует описание,
+// Создаёт сетку из IndicatorCard,
 
 import IndicatorCard from "./IndicatorCard";
 import type { IndicatorConfig } from "../config/Indicators";
