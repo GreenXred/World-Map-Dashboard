@@ -6,6 +6,27 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+
+            indicatorCard: {
+                year: "Year:",
+                noData: "No data",
+            },
+
+            indicators: {
+                gdpPerCapita: "GDP per capita (current US$)",
+                unemploymentRate: "Unemployment rate (% of labor force)",
+                totalPopulation: "Total Population",
+                urbanPopulationShare: "Urban population (% of total population)",
+                lifeExpectancy: "Life expectancy at birth, total (years)",
+                fertilityRate: "Total fertility rate (births per woman)",
+                primaryEnrollment: "School enrollment, primary (% gross)",
+                tertiaryEnrollment: "Tertiary school enrollment (% gross)",
+                energyUse: "Energy use (kg of oil equivalent per capita)",
+                pm25: "PM2.5 air pollution (µg/m³)",
+                forestArea: "Forest area (% of land area)",
+                renewableEnergy: "Renewable energy consumption (% of total)",
+            },
+
             // Navbar
             "nav.home": "Home",
             "nav.map": "Map",
@@ -142,6 +163,27 @@ const resources = {
     },
     ru: {
         translation: {
+
+            indicatorCard: {
+                year: "Год:",
+                noData: "Нет данных",
+            },
+
+            indicators: {
+                gdpPerCapita: "ВВП на душу населения (в долларах США)",
+                unemploymentRate: "Уровень безработицы (% рабочей силы)",
+                totalPopulation: "Общая численность населения",
+                urbanPopulationShare: "Доля городского населения (% от общего)",
+                lifeExpectancy: "Ожидаемая продолжительность жизни при рождении (лет)",
+                fertilityRate: "Суммарный коэффициент рождаемости (рождений на женщину)",
+                primaryEnrollment: "Охват начальным образованием (% от группы)",
+                tertiaryEnrollment: "Охват высшим образованием (% от группы)",
+                energyUse: "Потребление энергии (кг нефтяного эквивалента на человека)",
+                pm25: "Загрязнение PM2.5 (мкг/м³)",
+                forestArea: "Площадь лесов (% земель)",
+                renewableEnergy: "Потребление возобновляемой энергии (% от общего)",
+            },
+
             // Navbar
             "nav.home": "Главная",
             "nav.map": "Карта",

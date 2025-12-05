@@ -4,6 +4,7 @@
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
 import { normalizeWorldBank } from "../utils/Formatting";
 import { formatIndicatorValue } from "../utils/Formatting";
+import { useTranslation } from "react-i18next";
 
 import { motion } from "framer-motion";
 
@@ -15,6 +16,7 @@ type IndicatorCardProps = {
 
 export default function IndicatorCard({ label, indicatorId, countryCode }: IndicatorCardProps) {
     const { data, isLoading, error } = useWorldBankIndicator(countryCode, indicatorId);
+    const { t } = useTranslation();
 
     let year: string | null = null;
     let value: number | null = null;
@@ -87,7 +89,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
             whileHover={{ scale: 1.02 }}
         >
             <p className="text-xs font-medium text-slate-300 tracking-wide mb-1">
-                {label}
+                {t(label)}
             </p>
             <div className="h-px w-12 mb-2 bg-gradient-to-r from-emerald-400/70 via-emerald-300/40 to-transparent" />
 
@@ -101,7 +103,7 @@ export default function IndicatorCard({ label, indicatorId, countryCode }: Indic
                             {value !== null ? formatIndicatorValue(indicatorId, value) : "-"}
                         </p>
                         <p className="text-xs text-slate-400 mt-1">
-                            {year !== null ? `Year: ${year}` : "No data"}
+                            {year !== null ? `${t("indicatorCard.year")} ${year}` : t("indicatorCard.noData")}
                         </p>
                     </div>
 

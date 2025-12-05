@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./i18next";
+import "./i18next.ts";
 
 
 import { LanguageProvider } from "./Localization/LanguageContext.tsx";
