@@ -8,7 +8,7 @@ import About from "./pages/About/About";
 import Map from "./pages/Map/Map";
 import Navbar from "./components/Navbar";
 import LanguageModal from "./components/LanguageModal";
-import { useLanguage } from "./i18next/LanguageContext";
+import { useLanguage } from "./Localization/LanguageContext";
 
 export default function App() {
   const { setLang } = useLanguage();

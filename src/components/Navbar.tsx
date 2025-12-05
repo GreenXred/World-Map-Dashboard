@@ -2,7 +2,7 @@
 
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useLanguage } from "../i18next/LanguageContext";
+import { useLanguage } from "../Localization/LanguageContext";
 
 
 export default function Navbar() {

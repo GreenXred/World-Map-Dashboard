@@ -21,7 +21,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { setCountry } from "../../store/CountrySlice";
-import { useLanguage } from "../../i18next/LanguageContext";
+import { useLanguage } from "../../Localization/LanguageContext";
 import { INDICATORS, type IndicatorConfig } from "../../config/Indicators";
 import IndicatorCategory from "../../components/IndicatorCategory";
 import CountryChart from "../../components/CountryChart";

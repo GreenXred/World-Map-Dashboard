@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "./i18next";
 
-import { LanguageProvider } from "./i18next/LanguageContext.tsx";
+
+import { LanguageProvider } from "./Localization/LanguageContext.tsx";
 import { store } from "./store/Store.ts";
 
 import './index.css'
