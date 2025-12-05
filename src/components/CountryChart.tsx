@@ -4,6 +4,7 @@ import { useState } from "react";
 import { INDICATORS } from "../config/Indicators";
 import { useWorldBankIndicator } from "../api/useWorldBankIndicator";
 import { formatYAxisTick } from "../utils/Formatting";
+import { useTranslation } from "react-i18next";
 import { useCountryIndicator } from "../hooks/useCountryIndicator";
 import {
     LineChart,           // Контейнер графика
@@ -23,12 +24,8 @@ type CountryChartProps = {
 };
 
 // Главный компонент графика
-export default function CountryChart({
-    countryCode,
-    compareCode,
-    compareOptions,
-    onChangeCompare
-}: CountryChartProps) {
+export default function CountryChart({ countryCode, compareCode, compareOptions, onChangeCompare }: CountryChartProps) {
+    const { t } = useTranslation();
 
     // Выбранный индикатор
     const [selectedIndicator, setSelectedIndicator] = useState(
@@ -69,8 +66,9 @@ export default function CountryChart({
 
             {/* Заголовок */}
             <h2 className="text-lg md:text-xl font-semibold tracking-tight text-slate-50 mb-5">
-                The history of the indicator for {countryCode}
-                {compareCode ? ` vs ${compareCode}` : ""}
+                {compareCode
+                    ? t("chart.titleCompare", { code1: countryCode, code2: compareCode })
+                    : t("chart.title", { code: countryCode })}
             </h2>
 
             {/* Два селекта в строку */}
@@ -78,7 +76,7 @@ export default function CountryChart({
 
                 {/* Селект индикатора */}
                 <div className="flex flex-col flex-1 min-w-[230px] max-w-sm">
-                    <label className="text-[11px] font-medium text-slate-400 mb-1">Indicator</label>
+                    <label className="text-[11px] font-medium text-slate-400 mb-1">{t("chart.indicator")}</label>
 
                     <select
                         value={selectedIndicator}
@@ -88,7 +86,7 @@ export default function CountryChart({
                     >
                         {INDICATORS.map((ind) => (
                             <option key={ind.id} value={ind.id}>
-                                {ind.label}
+                                {t(ind.label)}
                             </option>
                         ))}
                     </select>
@@ -96,7 +94,7 @@ export default function CountryChart({
 
                 {/* Селект сравнения */}
                 <div className="flex flex-col flex-1 min-w-[230px] max-w-sm">
-                    <label className="text-[11px] font-medium text-slate-400 mb-1">Compare with</label>
+                    <label className="text-[11px] font-medium text-slate-400 mb-1">{t("chart.compareWith")}</label>
 
                     <select
                         className="h-9 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-3 text-sm text-slate-50
@@ -108,7 +106,7 @@ export default function CountryChart({
                             )
                         }
                     >
-                        <option value="">No comparison</option>
+                        <option value="">{t("chart.noComparison")}</option>
 
                         {compareOptions.map((c) => (
                             <option key={c.code} value={c.code}>
@@ -123,18 +121,20 @@ export default function CountryChart({
             <div className="mt-4 min-h-[80px]">
 
                 {isLoading && (
-                    <p className="text-slate-400 text-sm">Loading...</p>
+                    <p className="text-slate-400 text-sm">
+                        {t("chart.loading")}
+                    </p>
                 )}
 
                 {error && (
                     <p className="text-red-400 text-sm">
-                        Error loading data.
+                        {t("chart.error")}
                     </p>
                 )}
 
                 {!isLoading && !error && mergedData.length === 0 && (
                     <p className="text-slate-400 text-sm">
-                        No data available for this indicator.
+                        {t("chart.noData")}
                     </p>
                 )}
 

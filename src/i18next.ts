@@ -27,6 +27,17 @@ const resources = {
                 renewableEnergy: "Renewable energy consumption (% of total)",
             },
 
+            chart: {
+                title: "The history of the indicator for the country {{code}}",
+                titleCompare: "The history of the indicator for {{code1}} vs {{code2}}",
+                loading: "Loading...",
+                error: "Error loading data.",
+                noData: "No data available for this indicator.",
+                indicator: "Indicator",
+                compareWith: "Compare with",
+                noComparison: "No comparison",
+            },
+
             // Navbar
             "nav.home": "Home",
             "nav.map": "Map",
@@ -182,6 +193,17 @@ const resources = {
                 pm25: "Загрязнение PM2.5 (мкг/м³)",
                 forestArea: "Площадь лесов (% земель)",
                 renewableEnergy: "Потребление возобновляемой энергии (% от общего)",
+            },
+
+            chart: {
+                title: "История показателя для страны {{code}}",
+                titleCompare: "История показателя для {{code1}} и {{code2}}",
+                loading: "Загрузка данных...",
+                error: "Ошибка при загрузке данных.",
+                noData: "Нет данных для этого показателя.",
+                indicator: "Индикатор",
+                compareWith: "Сравнить с",
+                noComparison: "Без сравнения",
             },
 
             // Navbar
