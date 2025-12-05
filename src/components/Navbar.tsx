@@ -2,11 +2,19 @@
 
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useLanguage } from "../Localization/LanguageContext";
+import { useTranslation } from "react-i18next";
 
 
 export default function Navbar() {
-    const { lang, setLang } = useLanguage();
+    const { t, i18n } = useTranslation();
+
+    const currentLang = i18n.language; // получить текущий язык
+
+    // Смена и сохраниение локализации
+    const changeLang = (lang: "en" | "ru") => {
+        i18n.changeLanguage(lang);
+        localStorage.setItem("lang", lang); // чтобы язык сохранялся между сессиями
+    };
 
     return (
         <motion.header
@@ -29,7 +37,7 @@ export default function Navbar() {
                                     transition={{ type: "spring", stiffness: 250 }}
                                     className={isActive ? "text-emerald-400 font-medium" : "text-slate-300 hover:text-white"}
                                 >
-                                    Home
+                                    {t("nav.home")}
                                 </motion.div>
 
                                 {isActive && (
@@ -50,7 +58,7 @@ export default function Navbar() {
                                     transition={{ type: "spring", stiffness: 250 }}
                                     className={isActive ? "text-emerald-400 font-medium" : "text-slate-300 hover:text-white"}
                                 >
-                                    Map
+                                    {t("nav.map")}
                                 </motion.div>
 
                                 {isActive && (
@@ -71,7 +79,7 @@ export default function Navbar() {
                                     transition={{ type: "spring", stiffness: 250 }}
                                     className={isActive ? "text-emerald-400 font-medium" : "text-slate-300 hover:text-white"}
                                 >
-                                    About
+                                    {t("nav.about")}
                                 </motion.div>
 
                                 {isActive && (
@@ -86,15 +94,15 @@ export default function Navbar() {
                 </div>
                 <div className="flex gap-2 ml-4">
                     <button
-                        onClick={() => setLang("en")}
-                        className={lang === "en" ? "text-emerald-400" : "text-slate-300"}
+                        onClick={() => changeLang("en")}
+                        className={currentLang === "en" ? "text-emerald-400" : "text-slate-300"}
                     >
                         EN
                     </button>
 
                     <button
-                        onClick={() => setLang("ru")}
-                        className={lang === "ru" ? "text-emerald-400" : "text-slate-300"}
+                        onClick={() => changeLang("ru")}
+                        className={currentLang === "ru" ? "text-emerald-400" : "text-slate-300"}
                     >
                         RU
                     </button>

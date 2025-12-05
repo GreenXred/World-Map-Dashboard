@@ -1,21 +1,22 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const About: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="min-h-screen bg-slate-950 text-slate-50">
             <div className="max-w-6xl mx-auto px-4 py-16">
                 {/* Заголовок страницы */}
                 <header className="mb-10">
                     <p className="text-xs uppercase tracking-[0.18em] text-emerald-400/80 mb-2">
-                        About this project
+                        {t("about.header.label")}
                     </p>
                     <h1 className="text-3xl md:text-4xl font-semibold mb-3">
-                        World Map Dashboard
+                        {t("about.header.title")}
                     </h1>
                     <p className="text-sm md:text-base text-slate-400 max-w-2xl">
-                        This is a learning project that explores how to combine public data
-                        (World Bank Open Data), modern frontend tools and clean UI design
-                        into a single, interactive dashboard.
+                        {t("about.header.subtitle")}
                     </p>
                 </header>
 
@@ -33,19 +34,13 @@ const About: React.FC = () => {
                         "
                     >
                         <h2 className="text-lg md:text-xl font-semibold mb-2">
-                            Project overview
+                            {t("about.overview.title")}
                         </h2>
                         <p className="text-sm text-slate-300 mb-3">
-                            The main idea of this dashboard is to make global statistics more
-                            tangible. Instead of reading static tables, you can explore
-                            countries on an interactive map, open a dedicated page for each
-                            one and see how key indicators evolved over time.
+                            {t("about.overview.p1")}
                         </p>
                         <p className="text-xs md:text-sm text-slate-400">
-                            The project is intentionally focused on a small, curated set of
-                            indicators split into categories like Economy, Demography, Quality
-                            of life and Environment. This makes the interface easier to read
-                            and the charts easier to compare.
+                            {t("about.overview.p2")}
                         </p>
                     </section>
 
@@ -62,30 +57,28 @@ const About: React.FC = () => {
                         "
                     >
                         <h2 className="text-lg md:text-xl font-semibold mb-2">
-                            Data sources
+                            {t("about.data.title")}
                         </h2>
                         <p className="text-sm text-slate-300 mb-3">
-                            All numeric indicators are loaded from the{" "}
+                            {t("about.data.p1.beforeLink")}
                             <span className="text-emerald-300">
-                                World Bank Open Data API
+                                {t("about.data.api")}
                             </span>
-                            . Each indicator is identified by a stable code (for example,
+                            {t("about.data.p1.afterLinkBeforeCode")}
                             <code className="px-1.5 py-0.5 mx-1 rounded bg-slate-900/70 text-xs">
                                 NY.GDP.PCAP.CD
                             </code>
-                            for GDP per capita).
+                            {t("about.data.p1.afterCode")}
                         </p>
                         <ul className="text-xs md:text-sm text-slate-300 space-y-1.5 mb-3 list-disc list-inside">
-                            <li>GDP per capita (current US$)</li>
-                            <li>Unemployment rate (% of total labor force)</li>
-                            <li>Total population and urban population share</li>
-                            <li>Life expectancy and basic education coverage</li>
-                            <li>Access to safe water, CO₂ emissions and energy use</li>
+                            <li>{t("about.data.list1")}</li>
+                            <li>{t("about.data.list2")}</li>
+                            <li>{t("about.data.list3")}</li>
+                            <li>{t("about.data.list4")}</li>
+                            <li>{t("about.data.list5")}</li>
                         </ul>
                         <p className="text-xs md:text-sm text-slate-400">
-                            Not all indicators are available for every country and every year.
-                            When data is missing, some charts may have gaps or shorter lines –
-                            this reflects the real state of the dataset.
+                            {t("about.data.p2")}
                         </p>
                     </section>
 
@@ -102,23 +95,18 @@ const About: React.FC = () => {
                         "
                     >
                         <h2 className="text-lg md:text-xl font-semibold mb-2">
-                            Data loading & caching
+                            {t("about.loading.title")}
                         </h2>
                         <p className="text-sm text-slate-300 mb-3">
-                            Network requests are handled by{" "}
-                            <span className="text-sky-300">React Query</span>. Each indicator
-                            for each country is fetched only once and then cached in memory.
+                            {t("about.loading.p1").split("React Query")[0]}
+                            <span className="text-sky-300">React Query</span>
+                            {t("about.loading.p1").split("React Query")[1]}
                         </p>
                         <p className="text-xs md:text-sm text-slate-300 mb-3">
-                            This means the first visit to a country page or a new indicator
-                            may take a couple of seconds while data is being loaded from the
-                            World Bank API. Subsequent visits reuse cached data and feel
-                            almost instant.
+                            {t("about.loading.p2")}
                         </p>
                         <p className="text-xs md:text-sm text-slate-400">
-                            The dashboard also normalizes and sorts time series before they
-                            reach the charts. This is done in a separate utility layer so that
-                            the visual components stay as simple as possible.
+                            {t("about.loading.p3")}
                         </p>
                     </section>
 
@@ -135,35 +123,35 @@ const About: React.FC = () => {
                         "
                     >
                         <h2 className="text-lg md:text-xl font-semibold mb-3">
-                            Tech stack
+                            {t("about.tech.title")}
                         </h2>
                         <div className="grid md:grid-cols-2 gap-4 text-xs md:text-sm text-slate-300">
                             <div className="space-y-1.5">
                                 <p>
-                                    <span className="text-slate-400">Frontend:</span> React,
-                                    TypeScript, Vite
+                                    <span className="text-slate-400">{t("about.tech.frontend")}:</span>{" "}
+                                    {t("about.tech.frontend.desc")}
                                 </p>
                                 <p>
-                                    <span className="text-slate-400">State:</span> Redux Toolkit
-                                    (selected country and shared UI state)
+                                    <span className="text-slate-400">{t("about.tech.state")}:</span>{" "}
+                                    {t("about.tech.state.desc")}
                                 </p>
                                 <p>
-                                    <span className="text-slate-400">Data fetching:</span> React
-                                    Query (API calls & caching)
+                                    <span className="text-slate-400">{t("about.tech.data")}:</span>{" "}
+                                    {t("about.tech.data.desc")}
                                 </p>
                             </div>
                             <div className="space-y-1.5">
                                 <p>
-                                    <span className="text-slate-400">Charts:</span> Recharts with
-                                    normalized time series
+                                    <span className="text-slate-400">{t("about.tech.charts")}:</span>{" "}
+                                    {t("about.tech.charts.desc")}
                                 </p>
                                 <p>
-                                    <span className="text-slate-400">Styling:</span> Tailwind CSS
-                                    + subtle glassmorphism
+                                    <span className="text-slate-400">{t("about.tech.styling")}:</span>{" "}
+                                    {t("about.tech.styling.desc")}
                                 </p>
                                 <p>
-                                    <span className="text-slate-400">Animations:</span> Framer
-                                    Motion for small UI transitions
+                                    <span className="text-slate-400">{t("about.tech.animations")}:</span>{" "}
+                                    {t("about.tech.animations.desc")}
                                 </p>
                             </div>
                         </div>
@@ -181,25 +169,15 @@ const About: React.FC = () => {
                         "
                     >
                         <h2 className="text-lg md:text-xl font-semibold mb-2">
-                            Limitations & future ideas
+                            {t("about.limit.title")}
                         </h2>
                         <ul className="text-xs md:text-sm text-slate-300 space-y-1.5 mb-3 list-disc list-inside">
-                            <li>
-                                Data quality and freshness fully depend on the World Bank API.
-                            </li>
-                            <li>
-                                Some indicators are missing for certain countries or years,
-                                which leads to gaps in the charts.
-                            </li>
-                            <li>
-                                Only a small set of indicators is included to keep the UI
-                                readable.
-                            </li>
+                            <li>{t("about.limit.list1")}</li>
+                            <li>{t("about.limit.list2")}</li>
+                            <li>{t("about.limit.list3")}</li>
                         </ul>
                         <p className="text-xs md:text-sm text-slate-400">
-                            As a next step, the dashboard could be extended with UN SDG
-                            indicators, more advanced comparison tools or different visual
-                            layouts (for example, regional views or thematic dashboards).
+                            {t("about.limit.p1")}
                         </p>
                     </section>
                 </div>

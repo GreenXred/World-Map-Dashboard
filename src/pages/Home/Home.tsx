@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleGoToMap = () => {
         navigate("/map");
@@ -15,26 +18,22 @@ const Home: React.FC = () => {
                     {/* Левая колонка: текст и кнопка */}
                     <div className="space-y-6">
                         <h1 className="text-3xl text-4xl font-bold leading-tight">
-                            Explore the world through data
+                            {t("home.hero.title")}
                         </h1>
 
                         <p className="text-slate-300 text-sm text-base">
-                            This dashboard lets you explore key indicators for countries
-                            around the world. Use the interactive map to select a country,
-                            see its metrics by category, and follow trends over time.
+                            {t("home.hero.subtitle")}
                         </p>
 
                         <p className="text-slate-400 text-sm text-base">
-                            Each indicator shows a 20-year mini trend and a full historical
-                            chart. You can also compare two countries on the same chart to
-                            see how their paths differ, as well as get the latest up-to-date data.
+                            {t("home.hero.subtitle2")}
                         </p>
 
                         <button
                             onClick={handleGoToMap}
                             className="inline-flex items-center px-5 py-2.5 rounded-xl bg-emerald-500/90 hover:bg-emerald-400 transition text-sm font-medium shadow-lg shadow-emerald-500/20"
                         >
-                            Go to map
+                            {t("home.hero.button")}
                         </button>
                     </div>
 
@@ -56,12 +55,12 @@ const Home: React.FC = () => {
                         <div className="flex items-baseline justify-between mb-4">
                             <div>
                                 <div className="text-xs uppercase tracking-wide text-slate-400">
-                                    Country demo
+                                    {t("home.demo.badge")}
                                 </div>
                                 <div className="text-lg font-semibold">Brazil (BRA)</div>
                             </div>
                             <div className="text-xs text-slate-400">
-                                Example view
+                                {t("home.demo.example")}
                             </div>
                         </div>
 
@@ -77,10 +76,10 @@ const Home: React.FC = () => {
                             >
                                 <div className="flex justify-between items-baseline mb-1">
                                     <div className="text-xs text-slate-400">
-                                        GDP per capita
+                                        {t("home.demo.gdp.label")}
                                     </div>
                                     <div className="text-xs text-emerald-400">
-                                        (20 years)
+                                        {t("home.demo.gdp.trend")}
                                     </div>
                                 </div>
                                 <div className="flex items-end justify-between">
@@ -119,10 +118,10 @@ const Home: React.FC = () => {
                             >
                                 <div className="flex justify-between items-baseline mb-1">
                                     <div className="text-xs text-slate-400">
-                                        Population
+                                        {t("home.demo.pop.label")}
                                     </div>
                                     <div className="text-xs text-sky-400">
-                                        (20 years)
+                                        {t("home.demo.pop.trend")}
                                     </div>
                                 </div>
                                 <div className="flex items-end justify-between">
@@ -152,14 +151,13 @@ const Home: React.FC = () => {
 
                         {/* Подпись снизу */}
                         <div className="mt-4 text-[11px] text-slate-500">
-                            This is a static demo card to illustrate how indicators and
-                            mini trends look on the country page.
+                            {t("home.demo.footer")}
                         </div>
                     </div>
                 </div>
                 {/* Фичи */}
                 <div className="mt-20">
-                    <h2 className="text-2xl font-bold mb-8">What you can do</h2>
+                    <h2 className="text-2xl font-bold mb-8">{t("home.features.title")}</h2>
 
                     <div className="grid gap-6 grid-cols-3">
                         {/* Фича  1 */}
@@ -176,10 +174,9 @@ const Home: React.FC = () => {
                             "
                         >
                             <div className="text-3xl mb-3">🗺️</div>
-                            <h3 className="font-semibold mb-2">Interactive Map</h3>
+                            <h3 className="font-semibold mb-2">{t("home.features.map")}</h3>
                             <p className="text-slate-400 text-sm">
-                                Click on any country to open its dashboard, explore all available
-                                indicators and see real data trends.
+                                {t("home.features.map.desc")}
                             </p>
                         </div>
 
@@ -197,10 +194,9 @@ const Home: React.FC = () => {
                             "
                         >
                             <div className="text-3xl mb-3">📈</div>
-                            <h3 className="font-semibold mb-2">Indicator Trends</h3>
+                            <h3 className="font-semibold mb-2">{t("home.features.trends")}</h3>
                             <p className="text-slate-400 text-sm">
-                                Each indicator shows a 20-year mini trend and a full historical chart
-                                with normalized values.
+                                {t("home.features.trends.desc")}
                             </p>
                         </div>
 
@@ -218,21 +214,18 @@ const Home: React.FC = () => {
                             "
                         >
                             <div className="text-3xl mb-3">⚖️</div>
-                            <h3 className="font-semibold mb-2">Compare Countries</h3>
+                            <h3 className="font-semibold mb-2">{t("home.features.compare")}</h3>
                             <p className="text-slate-400 text-sm">
-                                Add a second country to the chart and compare long-term dynamics on
-                                any indicator available in the dataset.
+                                {t("home.features.compare.desc")}
                             </p>
                         </div>
                     </div>
                 </div>
                 {/* Как это работает */}
                 <div className="mt-20 border-t border-slate-800/70 pt-10">
-                    <h2 className="text-2xl font-bold mb-6">How it works</h2>
+                    <h2 className="text-2xl font-bold mb-6">{t("home.how.title")}</h2>
                     <p className="text-slate-400 text-sm max-w-2xl mb-8">
-                        The dashboard is built around a simple flow: pick a country, explore its
-                        indicators by category, and then compare it with another country on the same
-                        chart.
+                        {t("home.how.intro")}
                     </p>
 
                     <div className="space-y-5">
@@ -242,11 +235,10 @@ const Home: React.FC = () => {
                                 1
                             </div>
                             <div>
-                                <div className="font-semibold text-sm">Open the map and choose a country</div>
+                                <div className="font-semibold text-sm">{t("home.how.step1.title")}</div>
                                 <div className="text-slate-400 text-sm">
-                                    Go to the <span className="font-medium text-slate-200">Map</span> page
-                                    and click on any country. This will open a dedicated dashboard for that
-                                    country. There is also a complete list of countries and aggregators below the map.
+                                    {t("home.how.step1.beforeMap")} <span className="font-medium text-slate-200">{t("home.how.step1.mapLabel")}</span>
+                                    {t("home.how.step1.afterMap")}
                                 </div>
                             </div>
                         </div>
@@ -257,11 +249,9 @@ const Home: React.FC = () => {
                                 2
                             </div>
                             <div>
-                                <div className="font-semibold text-sm">Explore indicators by category</div>
+                                <div className="font-semibold text-sm">{t("home.how.step2.title")}</div>
                                 <div className="text-slate-400 text-sm">
-                                    On the country page, indicators are grouped into categories like
-                                    Economy, Demography or Environment. Each card shows the latest value
-                                    and a 20-year mini trend.
+                                    {t("home.how.step2.text")}
                                 </div>
                             </div>
                         </div>
@@ -272,10 +262,9 @@ const Home: React.FC = () => {
                                 3
                             </div>
                             <div>
-                                <div className="font-semibold text-sm">Compare countries on the chart</div>
+                                <div className="font-semibold text-sm">{t("home.how.step3.title")}</div>
                                 <div className="text-slate-400 text-sm">
-                                    Use the comparison dropdown under the main chart to add a second
-                                    country and see how their trajectories differ over time.
+                                    {t("home.how.step3.text")}
                                 </div>
                             </div>
                         </div>
