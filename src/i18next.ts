@@ -119,6 +119,25 @@ const resources = {
             "about.limit.list3": "Only a small set of indicators is included to keep the UI readable.",
             "about.limit.p1":
                 "As a next step, the dashboard could be extended with UN SDG indicators, more advanced comparison tools or different visual layouts (for example, regional views or thematic dashboards).",
+
+            // Country
+            "country.header.title": "Country overview",
+            "country.header.iso3": "ISO3",
+            "country.header.region": "Region",
+            "country.header.income": "Income level",
+
+            "country.category.economy.title": "Economy",
+            "country.category.economy.description": "Key economic indicators of the country.",
+            "country.category.demography.title": "Demography",
+            "country.category.demography.description": "Population size and urbanization level.",
+            "country.category.qualityOfLife.title": "Quality of Life",
+            "country.category.qualityOfLife.description": "Health, fertility and overall quality of life indicators.",
+            "country.category.socialSphere.title": "Social Sphere",
+            "country.category.socialSphere.description": "Social and education-related indicators.",
+            "country.category.ecology.title": "Ecology",
+            "country.category.ecology.description": "Environmental impact and climate-related indicators.",
+            "country.category.environment.title": "Environment",
+            "country.category.environment.description": "Forest resources and land use.",
         },
     },
     ru: {
@@ -234,6 +253,25 @@ const resources = {
             "about.limit.list3": "В проект включён ограниченный набор индикаторов, чтобы интерфейс оставался понятным.",
             "about.limit.p1":
                 "В будущем дашборд можно расширить индикаторами ООН (SDG), более продвинутыми инструментами сравнения или альтернативными визуальными представлениями — например, региональными или тематическими панелями.",
+
+            // Country
+            "country.header.title": "Сводка по стране",
+            "country.header.iso3": "ISO3",
+            "country.header.region": "Регион",
+            "country.header.income": "Уровень дохода",
+
+            "country.category.economy.title": "Экономика",
+            "country.category.economy.description": "Ключевые экономические показатели страны.",
+            "country.category.demography.title": "Демография",
+            "country.category.demography.description": "Численность населения и уровень урбанизации.",
+            "country.category.qualityOfLife.title": "Качество жизни",
+            "country.category.qualityOfLife.description": "Показатели здоровья, рождаемости и качества жизни.",
+            "country.category.socialSphere.title": "Социальная сфера",
+            "country.category.socialSphere.description": "Индикаторы, связанные с социальной и образовательной сферой.",
+            "country.category.ecology.title": "Экология",
+            "country.category.ecology.description": "Экологическое воздействие и климатические показатели.",
+            "country.category.environment.title": "Окружающая среда",
+            "country.category.environment.description": "Лесные ресурсы и использование земель.",
         },
     },
 };

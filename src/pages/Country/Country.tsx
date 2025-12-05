@@ -19,9 +19,9 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { setCountry } from "../../store/CountrySlice";
-import { useLanguage } from "../../Localization/LanguageContext";
 import { INDICATORS, type IndicatorConfig } from "../../config/Indicators";
 import IndicatorCategory from "../../components/IndicatorCategory";
 import CountryChart from "../../components/CountryChart";
@@ -30,7 +30,7 @@ import { useWorldBankCountries } from "../../api/WorldBank";
 export default function Country() {
     const { code } = useParams();
     const dispatch = useDispatch();
-    const { t } = useLanguage();
+    const { t } = useTranslation();
     const { data: countriesData } = useWorldBankCountries();         // Данные стран
     const [compareCode, setCompareCode] = useState<string | undefined>(undefined); // Для сравнения стран
 
@@ -40,16 +40,7 @@ export default function Country() {
         }
     }, [code, dispatch]);
 
-    // Описания категорий индикаторов
-    const categoryDescriptions: Record<IndicatorConfig["category"], string> = {
-        Economy: t("categoryEconomyDescription"),
-        Demography: t("categoryDemographyDescription"),
-        "Quality of Life": t("categoryQualityOfLifeDescription" as any),
-        "Social Sphere": t("categorySocialSphereDescription" as any),
-        Ecology: t("categoryEcologyDescription"),
-        Environment: t("categoryEnvironmentDescription"),
-    };
-
+    // Цветная полоска
     const categoryAccent: Record<IndicatorConfig["category"], string> = {
         Economy: "bg-emerald-400",
         Demography: "bg-sky-400",
@@ -118,12 +109,56 @@ export default function Country() {
             name: c.name // название страны
         }));
 
+    // Функция, которая по значению category возвращает ключи переводов для заголовка и описания
+    function getCategoryTranslationKeys(category: IndicatorConfig["category"]): {
+        titleKey: string;
+        descriptionKey: string;
+    } {
+        switch (category) {
+            case "Economy":
+                return {
+                    titleKey: "country.category.economy.title",
+                    descriptionKey: "country.category.economy.description",
+                };
+            case "Demography":
+                return {
+                    titleKey: "country.category.demography.title",
+                    descriptionKey: "country.category.demography.description",
+                };
+            case "Quality of Life":
+                return {
+                    titleKey: "country.category.qualityOfLife.title",
+                    descriptionKey: "country.category.qualityOfLife.description",
+                };
+            case "Social Sphere":
+                return {
+                    titleKey: "country.category.socialSphere.title",
+                    descriptionKey: "country.category.socialSphere.description",
+                };
+            case "Ecology":
+                return {
+                    titleKey: "country.category.ecology.title",
+                    descriptionKey: "country.category.ecology.description",
+                };
+            case "Environment":
+                return {
+                    titleKey: "country.category.environment.title",
+                    descriptionKey: "country.category.environment.description",
+                };
+            default:
+                // Если вдруг появится новая категория
+                return {
+                    titleKey: "country.category.unknown.title",
+                    descriptionKey: "country.category.unknown.description",
+                };
+        }
+    }
+
     return (
 
         // Страница страны с заголовком, категориями индикаторов и большим графиком
         <div className="flex flex-col items-center p-6">
             {/* Хеддер */}
-            {/* Хеддер — стеклянная карточка страны */}
             <div
                 className="
                     w-full max-w-5xl
@@ -152,7 +187,7 @@ export default function Country() {
                 {/* Текстовая часть */}
                 <div className="flex-1">
                     <p className="text-[11px] uppercase tracking-[0.16em] text-emerald-300/80 mb-1">
-                        Country overview
+                        {t("country.header.title")}
                     </p>
 
                     <h1 className="text-2xl md:text-3xl font-semibold text-slate-50">
@@ -161,13 +196,13 @@ export default function Country() {
 
                     <div className="mt-3 grid gap-1 text-xs md:text-sm text-slate-300">
                         <p>
-                            <span className="text-slate-400">ISO3:</span>{" "}
+                            <span className="text-slate-400">{t("country.header.iso3")}:</span>{" "}
                             <span className="text-slate-100">{code}</span>
                         </p>
 
                         {countryInfo?.region && (
                             <p>
-                                <span className="text-slate-400">Region:</span>{" "}
+                                <span className="text-slate-400">{t("country.header.region")}:</span>{" "}
                                 <span className="text-slate-100">
                                     {countryInfo.region.value}
                                 </span>
@@ -176,7 +211,7 @@ export default function Country() {
 
                         {countryInfo?.incomeLevel && (
                             <p>
-                                <span className="text-slate-400">Income level:</span>{" "}
+                                <span className="text-slate-400">{t("country.header.income")}:</span>{" "}
                                 <span className="text-slate-100">
                                     {countryInfo.incomeLevel.value}
                                 </span>
@@ -186,17 +221,21 @@ export default function Country() {
                 </div>
             </div>
 
+            {/* Секции с категориями индикаторов */}
             <div className="w-full max-w-5xl space-y-8 mt-6">
                 {categories.map((category) => {
                     const indicatorsInCategory = INDICATORS.filter(
                         (indicator) => indicator.category === category
                     );
 
+                    const { titleKey, descriptionKey } =
+                        getCategoryTranslationKeys(category);
+
                     return (
                         <IndicatorCategory
                             key={category}
-                            title={category}
-                            description={categoryDescriptions[category]}
+                            title={t(titleKey)}
+                            description={t(descriptionKey)}
                             accentClass={categoryAccent[category]}
                             indicators={indicatorsInCategory}
                             countryCode={code ?? ""}
