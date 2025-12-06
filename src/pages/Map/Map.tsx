@@ -4,6 +4,8 @@ import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
 import { useWorldBankCountries } from "../../api/WorldBank";
 import { WorldMapSvg } from "../../components/WorldMapSVG";
+import { buildIsoMaps, type WorldBankCountriesResponse, type WorldBankCountry } from "../../utils/isoMaps";
+
 
 // World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран
 
@@ -68,29 +70,20 @@ export default function Map() {
         navigate(`/country/${code}`);      // идём на /country/{code}
     }
 
-    let countries: any[] = []; // TODO типизировать countries
+    let countries: WorldBankCountry[] = [];
 
     if (data) {
-        countries = [...data[1]].sort((a: any, b: any) => // TODO типизировать a и b
+        const response = data as WorldBankCountriesResponse;
+        const rawCountries = response[1];
+        countries = [...rawCountries].sort((a, b) =>
             a.name.localeCompare(b.name)
         );
     }
 
-    // Преобразование ISO2 -> ISO3 и карта ISO3 -> имя страны
-    const iso2ToIso3: Record<string, string> = {};
-    const iso3ToName: Record<string, string> = {};
-
-    if (data) {
-        data[1].forEach((c: any) => {
-            if (c.iso2Code && c.id) {
-                const iso2 = c.iso2Code.toUpperCase();  // "RU"
-                const iso3 = c.id.toUpperCase();        // "RUS"
-
-                iso2ToIso3[iso2] = iso3;
-                iso3ToName[iso3] = c.name;              // "RUS" → "Russian Federation"
-            }
-        });
-    }
+    // Тянем преобразование ISO2 -> ISO3 и карта ISO3 -> имя страны из isoMaps.ts
+    const { iso2ToIso3, iso3ToName } = buildIsoMaps(
+        (data as WorldBankCountriesResponse | undefined)
+    );
 
     // Найти ISO2 по ISO3, чтобы показать флаг
     function findIso2ByIso3(iso3: string): string | null {
