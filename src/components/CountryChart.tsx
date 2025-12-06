@@ -1,4 +1,4 @@
-// src/components/CountryChart.tsx
+// Большой график 
 
 import { useState } from "react";
 import { INDICATORS } from "../config/Indicators";

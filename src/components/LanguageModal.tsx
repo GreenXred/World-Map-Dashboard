@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function LanguageModal({ onSelect }: { onSelect: (lang: string) => void }) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Затемнённый фон */}
             <motion.div // Фон
                 className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40 backdrop-blur-sm"
@@ -22,7 +22,7 @@ export default function LanguageModal({ onSelect }: { onSelect: (lang: string) =
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.25 }}
                 className="
-                    relative 
+                    relative z-10
                     bg-white/10 
                     backdrop-blur-2xl 
                     rounded-3xl 
