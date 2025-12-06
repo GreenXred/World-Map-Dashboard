@@ -1,7 +1,7 @@
 // Логика, которая по данным World Bank строит:
 
-//"RU" -> "RUS"
-//"RUS" -> "Russian Federation"
+// RU -> RUS
+// RUS -> Russian Federation
 
 // Тип одной страны из World Bank API
 export type WorldBankCountry = {
