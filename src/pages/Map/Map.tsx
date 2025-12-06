@@ -4,7 +4,6 @@ import { setCountry } from "../../store/CountrySlice";
 import { useNavigate } from "react-router-dom";
 import { useWorldBankCountries } from "../../api/WorldBank";
 import { WorldMapSvg } from "../../components/WorldMapSVG";
-import { COUNTRY_NAMES } from "../../utils/iso3";
 
 // World Bank API возвращает массив из 2 элементов: data[0] - метаданные, data[1] - массив стран
 
@@ -77,13 +76,18 @@ export default function Map() {
         );
     }
 
-    // Преобразование ISO2 в ISO3 для сопоставления с картой
+    // Преобразование ISO2 -> ISO3 и карта ISO3 -> имя страны
     const iso2ToIso3: Record<string, string> = {};
+    const iso3ToName: Record<string, string> = {};
 
     if (data) {
         data[1].forEach((c: any) => {
             if (c.iso2Code && c.id) {
-                iso2ToIso3[c.iso2Code.toUpperCase()] = c.id.toUpperCase();
+                const iso2 = c.iso2Code.toUpperCase();  // "RU"
+                const iso3 = c.id.toUpperCase();        // "RUS"
+
+                iso2ToIso3[iso2] = iso3;
+                iso3ToName[iso3] = c.name;              // "RUS" → "Russian Federation"
             }
         });
     }
@@ -128,14 +132,14 @@ export default function Map() {
                         {hoveredIso2 && (
                             <img
                                 src={`https://flagcdn.com/40x30/${hoveredIso2.toLowerCase()}.png`}
-                                alt={COUNTRY_NAMES[hoveredCode] || hoveredCode}
+                                alt={iso3ToName[hoveredCode] || hoveredCode}
                                 className="rounded"
                             />
                         )}
 
                         <div className="flex flex-col">
                             <span className="font-semibold">
-                                {COUNTRY_NAMES[hoveredCode] || hoveredCode}
+                                {iso3ToName[hoveredCode] || hoveredCode}
                             </span>
                             <span className="text-xs opacity-70">
                                 ISO3: {hoveredCode}
